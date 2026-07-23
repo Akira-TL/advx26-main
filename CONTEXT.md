@@ -24,13 +24,21 @@ The Bluetooth audio connection between the Playback Board and the Bluetooth Spea
 
 Avoid: board Bluetooth, BLE link.
 
+## Shared Sound
+
+The user-provided source for one experience. A Shared Sound is an audio recording or audio file only. The MVP does not require the user to provide a video, title, description, author profile, or STL model.
+
+## Preset Video
+
+One of a small set of cloud-owned video files prepared in advance for the competition MVP. The Cloud Media Service pairs a Shared Sound with a Preset Video and trims or loops it to the final sound duration. Future generated visuals are a separate asynchronous capability.
+
 ## Cloud Media Service
 
-The backend service that accepts, stores, describes, and distributes the media needed by the Playback Board. For the competition prototype it serves video and audio without mandatory authentication and does not require or render STL models.
+The backend service that accepts a Shared Sound, prepares device-ready media, publishes immutable Compact Content URLs, and distributes the assets needed by the Playback Board. For the competition prototype it operates without mandatory authentication and does not accept or render STL models or user-uploaded video.
 
 ## Media Package
 
-A cloud-side association of one playable video asset, one playable audio asset of equal duration, and the metadata needed by the Playback Board to retrieve and present them as one experience. A competition Media Package is at most 30 seconds long.
+A cloud-side association of one Shared Sound, one selected Preset Video, equal-duration indexed JPEG frames and PCM audio, and the metadata needed by the two boards to present them as one experience. A competition Media Package is at most 30 seconds long.
 
 ## Compact Content URL
 
@@ -50,4 +58,4 @@ A Playback Board message that acknowledges or rejects a command, reports current
 
 ## Trigger Control Panel
 
-The minimal user interface shown on the Trigger Board after it resolves a Compact Content URL. It presents playback information, progress, playback controls, and visible feedback for local interaction. It intentionally hides routine BLE, speaker, and loading diagnostics from the normal experience.
+The minimal user interface shown on the Trigger Board after it resolves a Compact Content URL. It presents a generated content label, duration, playback state, progress, standard playback controls, and visible feedback for local interaction. It does not require creator-authored title or description and intentionally hides routine BLE, speaker, and transport diagnostics from the normal experience.
