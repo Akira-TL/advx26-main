@@ -17,5 +17,7 @@ __pycache__/
 /src/
 /tools/
 
-# Unrelated hardware reference archive retained locally
+# Local source archives and superseded API copies
 /ESP32_MPU6050_V1.1_Agent开发包.zip
+/backend.zip
+/api/
