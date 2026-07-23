@@ -87,3 +87,19 @@ Git-ignored build-time values containing the fixed Wi-Fi credentials and public 
 ## Fixed Speaker
 
 The single A2DP Sink selected for the demo. It is manually paired once with Playback Board, stored as the only permitted speaker target, and automatically reconnected on later boots.
+
+## Board Link Message
+
+One application-level JSON document carried over the Board Link. ATT values contain a fixed binary fragment envelope plus UTF-8 JSON bytes. Reassembled messages are limited to 4096 bytes and individual URL fields to 1024 bytes.
+
+## Command Sequence
+
+The monotonically increasing 32-bit identity assigned by Trigger Board to each Playback Command. Only one command may be awaiting ACK/NACK. Retries reuse the same identity, and Playback Board returns the cached result without executing a duplicate command again.
+
+## Protocol Epoch
+
+The Board Link command-cache lifetime established by a successful HELLO exchange. HELLO communicates protocol version, board roles, boot identities, message limits, capabilities, and supported playback profiles. A BLE reconnect begins a new Protocol Epoch but does not automatically replace the current Playback Session.
+
+## Waiting Speaker
+
+The Playback state used when the configured Fixed Speaker is unavailable. The media clock does not advance in this state. Playback Board holds the prepared/current frame, reports the current position, retries the Speaker Link, and resumes automatically when the speaker returns if the Trigger-authoritative state was playing.
