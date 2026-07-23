@@ -5,3 +5,7 @@
 [submodule "clients/soundpola-app"]
 	path = clients/soundpola-app
 	url = git@github.com:hankunlingccx-cell/advx-soundpola-app.git
+
+[submodule "firmware/playback"]
+	path = firmware/playback
+	url = git@github.com:Akira-TL/advx26-playback.git
