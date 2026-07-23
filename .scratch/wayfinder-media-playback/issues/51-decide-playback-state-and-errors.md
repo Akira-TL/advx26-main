@@ -8,8 +8,6 @@ Blocked by: 11, 16, 17, 40, 46
 
 Which finite Playback states and stable error categories must Trigger understand, and which controls remain available during loading, buffering, seeking, speaker wait, completion, and failure?
 
-Decide whether the protocol freezes a bounded state/error enum or allows implementation-defined free-form status strings.
-
 ## Answer
 
 The first protocol freezes a bounded Playback state machine. Trigger must make behavior decisions from stable enums, never from human-readable status text.
@@ -17,13 +15,13 @@ The first protocol freezes a bounded Playback state machine. Trigger must make b
 Playback states are:
 
 - `IDLE`: no active prepared session;
-- `LOADING`: resolving, validating, or opening the session assets and indexes;
+- `LOADING`: validating descriptors, opening MP4 metadata, or loading the audio index;
 - `WAITING_SPEAKER`: media is prepared but the configured A2DP Sink is unavailable;
-- `BUFFERING`: filling the minimum JPEG/PCM buffers before media time advances;
+- `BUFFERING`: filling compressed H.264/MP3 and decoded video/PCM buffers before media time advances;
 - `PLAYING`: the PCM-derived media clock advances;
 - `PAUSED`: session and position are retained while the media clock is frozen;
-- `SEEKING`: decoder queues and HTTP Range reads are being repositioned;
-- `COMPLETED`: final frame is held and replay is available;
+- `SEEKING`: MP4 sync-sample selection, decoder reset, forward decode, and audio repositioning are in progress;
+- `COMPLETED`: final decoded video frame is held and replay is available;
 - `ERROR`: the active session cannot continue without a new command or external recovery.
 
 Stable error codes are:
@@ -31,13 +29,14 @@ Stable error codes are:
 - `NETWORK_TIMEOUT`;
 - `NETWORK_RANGE_INVALID`;
 - `CONTENT_INVALID`;
+- `MP4_DEMUX_FAILED`;
 - `INDEX_INVALID`;
-- `JPEG_DECODE_FAILED`;
+- `H264_DECODE_FAILED`;
 - `MP3_DECODE_FAILED`;
 - `PROTOCOL_INCOMPATIBLE`;
 - `INTERNAL_ERROR`.
 
-Every `ERROR` report includes `code`, `retryable`, the current `position_ms`, and an optional diagnostic string for logs. Trigger uses only the enum and `retryable` field for UI and control behavior. Diagnostics are not part of the stable behavioral contract.
+Every `ERROR` report includes `code`, `retryable`, the current `position_ms`, and an optional diagnostic string for logs. Trigger uses only the enum and `retryable` field for UI and control behavior.
 
 Control semantics are:
 

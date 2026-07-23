@@ -6,7 +6,9 @@ Blocked by: 33, 42
 
 ## Question
 
-Supply one physical Bluetooth A2DP Sink for the dual-Bluetooth and synchronized-media prototypes.
+Supply one physical Bluetooth A2DP Sink when Playback enters the hardware-debugging stage. This is not a blocker for Playback feature planning or code decomposition.
+
+Do not start pairing, discovery, address capture, or speaker-specific configuration during the current functional implementation phase.
 
 The task is complete when:
 

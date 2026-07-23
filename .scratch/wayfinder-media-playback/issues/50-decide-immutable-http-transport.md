@@ -8,11 +8,9 @@ Blocked by: 15, 17, 45, 47
 
 What HTTP behavior must the Cloud Media Service provide for immutable media assets and Compact Content JSON?
 
-Decide whether assets use content-derived ETags, long-lived immutable caching, HEAD requests, byte-range responses, and conditional range validation, or a simpler non-cacheable full-download contract.
-
 ## Answer
 
-Every published Media Package revision is immutable and exposes a complete byte-range-capable HTTP contract. This applies to `video.mjpg`, `video.idx`, `audio.mp3`, `audio.idx`, the manifest, and the Compact Content JSON for that revision.
+Every published Media Package revision is immutable and exposes a complete byte-range-capable HTTP contract. This applies to `video.mp4`, `audio.mp3`, `audio.idx`, the manifest, and the Compact Content JSON for that revision.
 
 Each immutable response includes:
 
@@ -25,7 +23,7 @@ Content-Length: <exact-byte-length>
 
 The ETag is a strong validator derived from the complete response bytes. A published URL must never later return different bytes under the same ETag or revision identity.
 
-The service supports `HEAD` with the same validators and representation metadata as `GET`, but without a response body. It supports one RFC-compatible byte range per request:
+The service supports `HEAD` with the same validators and representation metadata as `GET`, but without a response body. It supports one byte range per request:
 
 - a valid `Range: bytes=start-end` returns `206 Partial Content`;
 - `Content-Range` identifies the exact returned interval and total resource length;
@@ -34,6 +32,6 @@ The service supports `HEAD` with the same validators and representation metadata
 - when `If-Range` does not match, the server returns the complete current representation rather than a partial body, and Playback must not concatenate it with cached bytes;
 - multipart ranges are not required for the competition implementation.
 
-Playback validates the response status, `Content-Length`, `Content-Range`, ETag, expected revision, and manifest length before accepting bytes into an existing asset buffer. A validator mismatch is `CONTENT_INVALID`, not a transparent retry against the same immutable revision.
+The MP4 asset must use fast-start layout so Playback can retrieve `moov` before requesting sample ranges from `mdat`. Playback validates response status, `Content-Length`, `Content-Range`, ETag, expected revision, and manifest length before accepting bytes into an existing asset buffer. A validator mismatch is `CONTENT_INVALID`, not a transparent retry against the same immutable revision.
 
 Dynamic creation, upload, processing, and status endpoints use `Cache-Control: no-store`. They are separate from published immutable revision URLs. A Compact Content URL is exposed only after atomic publication and thereafter follows the same immutable caching rules as the assets it references.

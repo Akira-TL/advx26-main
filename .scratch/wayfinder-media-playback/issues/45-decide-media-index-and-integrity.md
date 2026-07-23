@@ -6,34 +6,35 @@ Blocked by: 14, 15, 16, 17
 
 ## Question
 
-How should Playback locate JPEG and MP3 frames for streaming, seeking, and corruption detection?
-
-Decide whether `video.idx` and an optional `audio.idx` are fixed-width binary or JSON, whether MP3 seek uses a server-generated frame index or only a CBR byte estimate, and which integrity values are available before or during playback.
+How should Playback locate MP4/H.264 and MP3 data for streaming, seeking, and corruption detection?
 
 ## Answer
 
-The `t5ai-jpeg-mp3-v1` profile publishes fixed-width little-endian binary indexes for both media assets. Playback must not infer seek offsets from a CBR byte ratio alone.
+The `t5ai-h264-mp3-v1` profile does not publish a separate video index. Playback obtains video timing, byte offsets, sample sizes, sync samples, and codec initialization data from the MP4 metadata.
 
-Both index files start with a 16-byte header:
+The server must produce a bounded MP4 layout:
+
+- `moov` precedes `mdat`;
+- exactly one H.264 video track is present;
+- required sample tables are complete and internally consistent;
+- `avcC` contains valid SPS/PPS and NAL length-size information;
+- sync samples/IDR positions are available for seek and recovery;
+- DTS and PTS are monotonic and bounded by the declared duration;
+- sample byte ranges are fully contained within the immutable `video.mp4` asset.
+
+Playback parses only the MP4 box and sample-table subset needed by this constrained profile. It rejects unsupported track layouts, fragmented MP4, edit lists that alter the media timeline, B-frame composition reordering, unknown sample entries, and out-of-bounds sample ranges.
+
+The independent MP3 asset retains a fixed-width little-endian `audio.idx`. Its 16-byte header is:
 
 ```text
-0–3     magic (`VJX1` for video, `AIX1` for audio)
+0–3     magic `AIX1`
 4–5     index_version = 1
 6–7     record_size = 16
 8–11    record_count
 12–15   reserved = 0
 ```
 
-Each `video.idx` record is 16 bytes:
-
-```text
-0–3     pts_ms
-4–7     byte_offset in video.mjpg
-8–11    byte_length of the complete JPEG frame
-12–15   crc32 of the indexed JPEG bytes
-```
-
-Each `audio.idx` record is 16 bytes and describes one complete MP3 frame:
+Each 16-byte audio record contains:
 
 ```text
 0–3     decoded_pcm_sample_position
@@ -42,15 +43,6 @@ Each `audio.idx` record is 16 bytes and describes one complete MP3 frame:
 12–15   crc32 of the indexed MP3 bytes
 ```
 
-Indexes use monotonically increasing presentation/sample positions and non-overlapping byte ranges fully contained by their corresponding asset. The Cloud Media Service validates these invariants before publication.
+For an out-of-buffer video seek, Playback chooses the MP4 sync sample at or before the target, resets the H.264 decoder, reapplies SPS/PPS, decodes forward, and suppresses presentation until the requested timestamp. For MP3 seek, Playback selects the indexed frame at or before the target, starts from a short preroll window of up to ten preceding MP3 frames, and discards decoded samples until the requested position.
 
-For an out-of-buffer MP3 seek, Playback selects the indexed frame at or before the target, starts decoding from a short preroll window of up to ten preceding MP3 frames, and discards decoded samples until the requested sample position. This avoids relying on a simple CBR estimate and gives the decoder enough history for Layer III frame dependencies.
-
-The manifest includes, for each media and index asset:
-
-- exact byte length;
-- lowercase hexadecimal SHA-256;
-- immutable ETag or equivalent revision identity;
-- index version where applicable.
-
-Playback validates Content-Length, ETag/revision identity, index bounds, and per-record CRC32 while streaming. Whole-file SHA-256 is mandatory during backend publication and may also be checked by Playback only when the complete asset is locally available; playback does not block on downloading a whole asset solely to recompute SHA-256.
+The manifest includes exact byte length, lowercase hexadecimal SHA-256, and immutable ETag for `video.mp4`, `audio.mp3`, and `audio.idx`; `audio.idx` also carries its index version. Playback validates resource identity, MP4 sample bounds, audio index bounds, and per-record MP3 CRC32 while streaming. Whole-file SHA-256 remains mandatory during backend publication and is optional on-device unless the full asset is already available.

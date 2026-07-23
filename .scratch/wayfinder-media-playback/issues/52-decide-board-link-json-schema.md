@@ -8,8 +8,6 @@ Blocked by: 11, 36, 38, 39, 48, 51
 
 What common JSON envelope and exact command/report vocabularies are carried inside the binary Board Link fragments?
 
-Decide whether every body uses one versioned schema with strict required fields and enumerated message types, or whether each command/report uses an ad hoc object shape. Also decide whether protocol timestamps rely only on media positions and sequence IDs or include unsynchronized wall-clock values.
-
 ## Answer
 
 Every reconstructed Board Link JSON body uses one versioned top-level object:
@@ -32,9 +30,9 @@ Top-level rules are:
 - `sequence_id` is an unsigned 32-bit integer;
 - `payload` is always a JSON object, including when empty;
 - the complete UTF-8 JSON body remains within the previously selected 4096-byte limit;
-- each URL remains within 1024 bytes, and the complete `LOAD_SESSION` body must still fit the overall 4096-byte limit.
+- each URL remains within 1024 bytes, and the complete `LOAD_SESSION` body must still fit the overall limit.
 
-Unknown optional payload fields are ignored within the same compatible protocol major. Unknown message types, missing required fields, wrong JSON types, invalid enum values, out-of-range integers, or non-object payloads are rejected with `NACK`. Neither board sends wall-clock timestamps because their clocks are not synchronized. Protocol timing uses `position_ms`, `duration_ms`, `sequence_id`, and connection-local `boot_id` values only.
+Unknown optional payload fields are ignored within the same compatible protocol major. Unknown message types, missing required fields, wrong JSON types, invalid enum values, out-of-range integers, or non-object payloads are rejected with `NACK`. Neither board sends wall-clock timestamps. Protocol timing uses `position_ms`, `duration_ms`, `sequence_id`, and connection-local `boot_id` values only.
 
 ## Commands
 
@@ -56,14 +54,30 @@ Command `type` values are:
   "protocol_minor": 0,
   "role": "TRIGGER",
   "boot_id": "boot-id",
-  "capabilities": ["BOARD_LINK_V1", "T5AI_JPEG_MP3_V1"],
+  "capabilities": ["BOARD_LINK_V1", "T5AI_H264_MP3_V1"],
   "max_message_bytes": 4096
 }
 ```
 
 `GET_STATUS`, `PLAY`, `PAUSE`, and `STOP` use an empty payload. `SEEK_MS` requires one integer `position_ms` bounded to the active session duration.
 
-`LOAD_SESSION` requires `content_id`, `revision`, `duration_ms`, `profile`, and normalized video/audio descriptors. The profile must be `t5ai-jpeg-mp3-v1`. Each asset descriptor contains its absolute immutable URL, exact byte length, SHA-256, and strong ETag. Video additionally carries width, height, frame rate, frame count, stream URL, and index URL. Audio additionally carries sample rate, channel count, bitrate, stream URL, and index URL. Playback rejects the command before downloading when the descriptor exceeds protocol limits, uses an unsupported profile, or contains inconsistent bounds.
+`LOAD_SESSION` requires `content_id`, `revision`, `duration_ms`, `profile`, and normalized video/audio descriptors. The profile must be `t5ai-h264-mp3-v1`.
+
+The video descriptor contains:
+
+- absolute immutable `url` for `video.mp4`;
+- exact byte length, SHA-256, and strong ETag;
+- `format: MP4_H264`, codec profile, pixel format, width, height, frame rate, and maximum keyframe interval.
+
+It does not contain a separate video index URL. Playback obtains sample timing, byte ranges, sync samples, and SPS/PPS from MP4 metadata.
+
+The audio descriptor contains:
+
+- absolute immutable MP3 URL and `audio.idx` URL;
+- exact byte lengths, SHA-256 values, and strong ETags;
+- sample rate, channel count, and bitrate.
+
+Playback rejects `LOAD_SESSION` before downloading when the descriptor exceeds protocol limits, uses an unsupported profile, or contains inconsistent bounds.
 
 ## Reports
 

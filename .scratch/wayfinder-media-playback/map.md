@@ -25,18 +25,18 @@ Produce an implementation-ready technical specification, ADR set, and dependency
 - [Make the Trigger Board the playback authority](issues/05-make-trigger-board-playback-authority.md) — NFC starts a session owned by the Trigger Board, which remotely controls playback and receives acknowledgements, state, progress, completion, and errors.
 - [Set the media duration and synchronization target](issues/06-set-media-duration-and-sync-target.md) — Audio and video have equal duration, are at most 30 seconds, and may differ by roughly 100–300 ms in the demo.
 - [Set replacement behavior and start latency](issues/07-set-replacement-and-start-latency.md) — New content interrupts current playback; target playback start is 3–5 seconds after a valid request.
-- [Use synchronous cloud media preparation for the demo](issues/08-use-synchronous-cloud-transcoding.md) — The MVP synchronously normalizes audio, pairs a Preset Video, and publishes indexed JPEG plus MP3 assets; future generated visuals are asynchronous.
+- [Use synchronous cloud media preparation for the demo](issues/08-use-synchronous-cloud-transcoding.md) — The MVP synchronously normalizes audio, pairs a Preset Video, and publishes constrained fast-start MP4/H.264 plus independent MP3 assets; future generated visuals are asynchronous.
 - [Fix the Bluetooth speaker target](issues/09-fix-the-speaker-target.md) — The first demo auto-connects to one configured speaker instead of implementing a general picker.
 - [Resolve NFC into a Playback Session](issues/10-decide-nfc-session-resolution.md) — NFC stores a compact URL; the Trigger Board resolves it and sends a device-oriented session descriptor over BLE.
 - [Define the Board Link command and report model](issues/11-decide-board-link-command-model.md) — Support load, play, pause, seek, stop, correlated ACK/NACK, immediate state/error reports, and 500 ms progress reports.
 - [Keep all interaction on the Trigger Board](issues/12-decide-playback-interaction-semantics.md) — Playback Board is output-only; the Trigger Board shows playback information, progress, controls, and interaction feedback.
 - [Research simultaneous Board Link and Speaker Link capability](issues/13-research-dual-bluetooth-capability.md) — T5AI exposes BLE GATT and A2DP Source together, but sustained coexistence must pass an early hardware prototype.
-- [Select the device-ready JPEG/MP3 profile](issues/14-research-media-decode-capability.md) — Use `video.mjpg` plus `video.idx` and independent CBR MP3 under the `t5ai-jpeg-mp3-v1` profile; MP4/H.264 is not the device contract.
-- [Define the device media manifest contract](issues/15-decide-media-manifest-contract.md) — Compact Content JSON separates Trigger presentation from a normalized `t5ai-jpeg-mp3-v1` playback descriptor.
+- [Select the device-ready MP4/H.264 and MP3 profile](issues/14-research-media-decode-capability.md) — Use constrained `video.mp4` plus independent `audio.mp3`/`audio.idx` under `t5ai-h264-mp3-v1`; MP4 demux and H.264 decoding are explicit Playback responsibilities.
+- [Define the device media manifest contract](issues/15-decide-media-manifest-contract.md) — Compact Content JSON separates Trigger presentation from a normalized `t5ai-h264-mp3-v1` playback descriptor.
 - [Use a landscape Playback Board profile](issues/21-decide-playback-display-orientation.md) — Cloud output is 480x320 so the device does not rotate video frames at runtime.
 - [Define the Trigger Control Panel contract](issues/22-decide-trigger-control-panel-contract.md) — Show generated identity, duration, state, progress, standard controls, and feedback without creator-authored metadata or custom actions.
 - [Define automatic playback lifecycle](issues/23-decide-playback-lifecycle-behavior.md) — NFC resolution auto-loads and auto-plays; completion holds the final frame and exposes replay on Trigger.
-- [Use an audio-only sharing source contract](issues/24-decide-upload-source-contract.md) — Users submit only a Shared Sound; the MVP pairs it with a cloud-owned Preset Video and produces indexed JPEG plus MP3 assets.
+- [Use an audio-only sharing source contract](issues/24-decide-upload-source-contract.md) — Users submit only a Shared Sound; the MVP pairs it with a cloud-owned Preset Video and produces MP4/H.264 plus independent MP3 assets.
 - [Return immutable Trigger-facing JSON from Compact Content URLs](issues/25-decide-compact-url-contract.md) — Each ready revision has a direct, immutable URL and no redirect or second lookup.
 - [Assign Preset Videos deterministically](issues/26-decide-preset-video-selection.md) — New packages choose from the enabled pool by stable content ID and persist the selected preset.
 - [Generate neutral labels for untitled sounds](issues/27-decide-untitled-sound-label.md) — Trigger shows `声音碎片 #XXXX` plus recording/submission time when available.
@@ -56,9 +56,9 @@ Produce an implementation-ready technical specification, ADR set, and dependency
 - [Assign stable physical board identities](issues/41-assign-physical-board-identities.md) — `5AAE167197` is Playback and `5AAE167460` is Trigger; all other connected boards remain unmanaged.
 - [Defer the physical speaker identity](issues/42-identify-prototype-speaker.md) — No prototype speaker is currently available, so hardware media work must not substitute another Bluetooth device.
 - [Set the dual-Bluetooth prototype acceptance threshold](issues/43-decide-dual-bluetooth-prototype-acceptance.md) — Require a 60-second zero-disconnect run, 500 ms reports, 20 timely command/ACK exchanges, and no underruns or audible interruption.
-- [Use partial prebuffering with a PCM-derived media clock](issues/16-decide-buffering-and-sync-architecture.md) — Preload the frame index, 0.5–1 second of decoded PCM, and 3–5 JPEG frames; stream the remainder, drop late video frames, and never stall audio for video.
-- [Bound media corruption and decoder recovery](issues/17-decide-disconnect-and-recovery.md) — Skip isolated JPEG failures, resynchronize isolated MP3 failures with timeline-preserving silence, fail after three consecutive errors, and distinguish retryable network failure from immutable content corruption.
-- [Use fixed binary media indexes and layered integrity checks](issues/45-decide-media-index-and-integrity.md) — Publish 16-byte little-endian JPEG and MP3 frame records with CRC32, while the manifest carries exact lengths, SHA-256, ETag/revision identity, and index version.
+- [Use partial prebuffering with a PCM-derived media clock](issues/16-decide-buffering-and-sync-architecture.md) — Parse MP4 metadata first, prebuffer decoded PCM plus bounded compressed/decoded H.264 queues, decode video in dependency order, and never stall audio for video.
+- [Bound media corruption and decoder recovery](issues/17-decide-disconnect-and-recovery.md) — Recover H.264 at the next valid IDR, resynchronize isolated MP3 failures with timeline-preserving silence, and distinguish retryable network failure from immutable content corruption.
+- [Use MP4 sample tables plus an indexed MP3 asset](issues/45-decide-media-index-and-integrity.md) — Video timing, ranges, sync samples, and codec configuration come from constrained MP4 metadata; only MP3 retains a fixed-width binary index.
 - [Use bounded in-memory pause, seek, and replay caching](issues/46-decide-pause-seek-cache-behavior.md) — Pause prefetches only to configured high-water marks; out-of-buffer seek resets decoder queues and reopens indexed Range reads without changing the session identity.
 - [Publish Media Packages atomically](issues/47-decide-atomic-media-publication.md) — Build and validate a private staging revision, then expose the immutable READY descriptor and every asset together.
 - [Freeze Board Link UUIDs and the v1 fragment header](issues/48-decide-board-link-wire-constants.md) — Use stable private Service/Command/Report UUIDs and a fixed 16-byte little-endian envelope without an additional application checksum.
@@ -69,13 +69,14 @@ Produce an implementation-ready technical specification, ADR set, and dependency
 
 ## Active decision frontier
 
-- [Provide and approve the fixed prototype speaker](issues/44-provide-prototype-speaker.md).
-- After the speaker is available, execute [the simultaneous BLE and A2DP prototype](issues/19-prototype-dual-bluetooth-coexistence.md), followed by [the JPEG/MP3 playback prototype](issues/20-prototype-jpeg-pcm-playback.md).
-- After the remaining decisions and both prototypes resolve, define [end-to-end demo acceptance](issues/18-define-demo-acceptance.md).
+- Playback software decisions are complete and have been handed to the [Playback firmware implementation specification](../playback-firmware/spec.md).
+- Playback functional implementation may proceed without a physical speaker; pairing and speaker identity are deferred to the hardware-debugging stage.
+- After the functional tickets are implemented, [provide the fixed prototype speaker](issues/44-provide-prototype-speaker.md), execute [the simultaneous BLE and A2DP prototype](issues/19-prototype-dual-bluetooth-coexistence.md), then execute [the MP4/H.264 and MP3 playback prototype](issues/20-prototype-h264-mp3-playback.md).
+- After both hardware prototypes resolve, define [end-to-end demo acceptance](issues/18-define-demo-acceptance.md).
 
 ## Not yet specified
 
-- Decoder task structure, memory ownership, exact ring-buffer sizes, final JPEG quality, and calibrated speaker latency after the media prototype.
+- H.264 decoder implementation, reference-frame memory, bitrate ceiling, exact ring-buffer sizes, and calibrated speaker latency after the media prototype.
 - Backend schema migration, audio normalization implementation, index generation, and atomic publication ticket breakdown.
 - Firmware module boundaries and test seams after the hardware prototypes settle the runtime seams.
 - The exact fixed speaker name/address until a physical A2DP Sink is supplied and approved.

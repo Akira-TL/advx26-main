@@ -10,15 +10,16 @@ Where and when are device-ready media assets produced?
 
 ## Answer
 
-The Cloud Media Service runs on a computer or server where FFmpeg can be installed.
+The Cloud Media Service runs on a computer or server where FFmpeg and FFprobe can be installed.
 
 For the competition MVP, content preparation is synchronous and limited to predictable operations:
 
 - validate and normalize the submitted audio;
 - pair it with a pre-provisioned cloud video;
 - trim or loop the selected video to the final audio duration;
-- produce an indexed JPEG frame stream and an independent MP3 audio asset;
-- publish an immutable Compact Content URL only after all assets are ready.
+- transcode the video into constrained fast-start MP4/H.264;
+- transcode the audio into an independent MP3 asset and generate `audio.idx`;
+- publish an immutable Compact Content URL only after every asset is validated and ready.
 
 The request may take longer, but the first implementation does not require a general asynchronous job system. A failed preparation receives a small fixed automatic retry budget; after two retries it enters `FAILED` and may be retried manually.
 

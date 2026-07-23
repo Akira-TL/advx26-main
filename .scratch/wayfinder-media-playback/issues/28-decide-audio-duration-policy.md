@@ -12,6 +12,6 @@ When a submitted Shared Sound exceeds 30 seconds, should the backend reject it, 
 
 The Cloud Media Service automatically keeps the first 30 seconds when a Shared Sound is longer than the MVP limit. It does not require an interactive trimming step.
 
-For shorter sounds, retain the complete sound. The selected Preset Video is looped when shorter than the normalized sound and trimmed when longer. The indexed JPEG stream and MP3 asset must have the same final duration.
+For shorter sounds, retain the complete sound. The selected Preset Video is looped when shorter than the normalized sound and trimmed when longer. The generated H.264 video track and independent MP3 asset must have the same final duration within the agreed synchronization tolerance.
 
 The Compact Content URL response reports the normalized duration. The original uploaded duration may be retained as backend diagnostics but is not required by either board.

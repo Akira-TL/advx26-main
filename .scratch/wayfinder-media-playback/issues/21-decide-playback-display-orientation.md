@@ -10,4 +10,4 @@ Should the device-ready video and Playback Board experience use a 480x320 landsc
 
 ## Answer
 
-Use a 480x320 landscape device profile. The Cloud Media Service produces landscape JPEG frames for the physical orientation already validated on the Playback Board, so the device does not rotate each video frame at runtime.
+Use a 480x320 landscape device profile. The Cloud Media Service produces a 480x320 H.264 video track for the physical orientation already validated on the Playback Board, so the device does not rotate decoded video frames at runtime.

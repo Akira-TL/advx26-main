@@ -6,21 +6,23 @@ Blocked by:
 
 ## Question
 
-Which video and audio representation should the Cloud Media Service prepare for reliable Playback Board decoding and Bluetooth speaker output?
+Which video and audio representation should the Cloud Media Service prepare for Playback Board decoding and Bluetooth speaker output?
 
 ## Answer
 
-Use the bounded device profile `t5ai-jpeg-mp3-v1`:
+The selected product contract is `t5ai-h264-mp3-v1`:
 
-- video is a sequence of independently decodable baseline JPEG frames packed into `video.mjpg`;
-- `video.idx` records presentation timestamp, byte offset, and byte length for every frame;
-- output is 480x320 landscape at 10 fps, with 15 fps only as a prototype stretch target;
-- audio is a separate `audio.mp3` asset using 128 kbps CBR, 44.1 kHz, and at most two channels;
+- video is one `video.mp4` file with exactly one constrained H.264 video track;
+- MP4 uses fast-start layout with `moov` before `mdat` so metadata can be obtained before media ranges;
+- H.264 uses Baseline Profile, YUV 4:2:0, progressive frames, no B frames, closed GOP, and an IDR interval no longer than approximately one second;
+- output is 480x320 landscape at 10 fps initially, with 15 fps only as a later capability target;
+- audio remains a separate `audio.mp3` asset using 128 kbps CBR, 44.1 kHz, and at most two channels;
+- `audio.idx` records MP3 frame boundaries and decoded sample positions for accurate seek;
 - Playback decodes MP3 to PCM S16LE and supplies PCM to A2DP Source;
-- decoded PCM consumption is the synchronization clock and late video frames are dropped.
+- decoded PCM consumption remains the synchronization clock.
 
-MP4/H.264 is not the device contract. Official T5-E1-IPEX material confirms H.264 encoding rather than a reusable local playback decoder, and the inspected TuyaOpen v1.9.0 application path does not provide general MP4 demux plus H.264 decoding.
+Earlier JPEG/MJPEG decisions are superseded. The official T5-E1-IPEX material and inspected TuyaOpen v1.9.0 paths did not establish a ready-to-use cloud-file MP4 demux plus H.264 decode pipeline. That fact remains an implementation risk, but it no longer changes the selected media contract. Playback must explicitly implement or integrate an MP4 demuxer and an H.264 decoder adapter.
 
-Final JPEG quality, 10/15 fps viability, memory use, speaker latency, and concurrent BLE/A2DP stability remain subject to the hardware prototype.
+The initial H.264 bitrate ceiling, exact decoder implementation, reference-frame memory, and sustained 10/15 fps capability remain implementation and later hardware-prototype questions.
 
 Research asset: [Device-ready media capability research](../research/14-media-decode-capability.md).
