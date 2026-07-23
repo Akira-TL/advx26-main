@@ -70,4 +70,20 @@ The persisted choice of one enabled Preset Video for a new Media Package. The ba
 
 ## Sharing Interface
 
-The phone-facing interface used to record or select a Shared Sound, upload it, wait for the Media Package to become ready, and write the resulting Compact Content URL to an NFC tag. The Trigger Board is not responsible for recording, uploading, or writing NFC in the normal product flow.
+The phone-facing interface used to record or select a Shared Sound, upload it, wait for the Media Package to become ready, and write the resulting Compact Content URL to an NFC tag. It is external to this repository and will be synchronized separately. This repository owns the backend contract it consumes. The Trigger Board is not responsible for recording, uploading, or writing NFC in the normal product flow.
+
+## NFC URL Source
+
+The application-facing seam through which Trigger firmware receives a Compact Content URL decoded from a PN532 NDEF record. This workstream consumes the URL but does not own PN532 wiring, pin assignment, electrical interface selection, or low-level transport/driver integration.
+
+## Firmware Applications
+
+The two T5AI applications maintained in this repository: Trigger firmware and Playback firmware. They use separate application entry points and UI/device modules while sharing the Board Link protocol, validated session value objects, and common test fixtures.
+
+## Demo Network Configuration
+
+Git-ignored build-time values containing the fixed Wi-Fi credentials and public Cloud Media Service base URL used by both boards. Provisioning UX and production secret management are outside the competition MVP.
+
+## Fixed Speaker
+
+The single A2DP Sink selected for the demo. It is manually paired once with Playback Board, stored as the only permitted speaker target, and automatically reconnected on later boots.
