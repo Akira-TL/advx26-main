@@ -1,0 +1,14 @@
+BasedOnStyle: LLVM
+Language: Cpp
+BreakBeforeBraces: Allman
+ColumnLimit: 120
+IndentWidth: 4
+ContinuationIndentWidth: 4
+UseTab: Never
+SortIncludes: Never
+BinPackArguments: false
+BinPackParameters: false
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
+AlignAfterOpenBracket: Align
+PointerAlignment: Right

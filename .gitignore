@@ -1,0 +1,21 @@
+# TuyaOpen generated files
+**/.build/
+**/dist/
+**/.deps/
+**/.config
+**/using.config
+**/CatalogKconfig
+**/compile_commands.json
+*.log
+__pycache__/
+
+# Early root-level drafts; firmware/ is the canonical application
+/CMakeLists.txt
+/app_default.config
+/config/
+/include/
+/src/
+/tools/
+
+# Unrelated hardware reference archive retained locally
+/ESP32_MPU6050_V1.1_Agent开发包.zip
