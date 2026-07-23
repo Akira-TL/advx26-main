@@ -16,30 +16,27 @@ The initial target is the official **3.5-inch 320x480 ILI9488** display configur
 ## Layout
 
 ```text
-firmware/                 # canonical Tuya T5AI firmware
-  CMakeLists.txt
-  app_default.config
-  config/
-  include/
-  src/
+firmware/
+  playback/               # Playback Board firmware Git submodule
+  trigger/                # reserved Trigger Board repository location
 backend/                  # FastAPI service Git submodule
 clients/
   soundpola-app/          # mobile sharing client Git submodule
-patches/                  # project-owned TuyaOpen patches
-scripts/                  # build/setup helpers
-tests/                    # host syntax and configuration checks
+patches/                  # shared TuyaOpen patches
+scripts/                  # parent build/setup helpers
+tests/                    # parent integration and host checks
 docs/                     # durable engineering documentation
 ```
 
 Local discussion artifacts under `.scratch/` and the throwaway `Sound-Visualization-Kaleidoscope-effect/` prototype are intentionally excluded from the parent Git repository. Their local files remain available; the visualization prototype retains its own independent Git repository.
 
-After cloning the parent repository, initialize the maintained service and client repositories with:
+After cloning the parent repository, initialize the maintained Playback, backend, and mobile-client repositories with:
 
 ```bash
 git submodule update --init --recursive
 ```
 
-`firmware/src/main.c` owns TuyaOpen/LVGL startup. `firmware/src/mob_screen.c` owns all visual composition, so future screen redesigns do not need to touch board initialization.
+`firmware/playback/src/main.c` owns Playback TuyaOpen/LVGL startup. `firmware/playback/src/mob_screen.c` owns its current visual composition. Trigger implementation is intentionally absent from `firmware/trigger/` until a dedicated Trigger repository is created.
 
 ## Local checks
 
@@ -61,7 +58,7 @@ A real firmware build still requires TuyaOpen and the T5AI toolchain.
 
 ## TuyaOpen build
 
-Install TuyaOpen outside this repository, apply the project-owned display patch, then build the canonical `firmware/` application directly:
+Install TuyaOpen outside this repository, apply the shared display patch, then build the Playback submodule directly:
 
 ```bash
 git clone --branch v1.9.0 https://github.com/tuya/TuyaOpen.git ~/SDKs/TuyaOpen-v1.9.0
@@ -69,7 +66,7 @@ cd /home/akira/Projects/advx26
 bash scripts/apply-tuyaopen-patches.sh ~/SDKs/TuyaOpen-v1.9.0
 
 source ~/SDKs/TuyaOpen-v1.9.0/export.sh
-cd /home/akira/Projects/advx26/firmware
+cd /home/akira/Projects/advx26/firmware/playback
 tos.py check
 tos.py config choice -c TUYA_T5AI_BOARD_LCD_3.5.config
 tos.py build
@@ -83,9 +80,9 @@ Use the lower-numbered virtual serial port for downloading and the higher-number
 
 ```bash
 source ~/SDKs/TuyaOpen-v1.9.0/export.sh
-cd /home/akira/Projects/advx26/firmware
+cd /home/akira/Projects/advx26/firmware/playback
 
-# Example for managed candidate 5AAE167197 only.
+# Playback Board 5AAE167197 only.
 tos.py flash -p /dev/serial/by-id/usb-1a86_USB_Dual_Serial_5AAE167197-if00
 
 tos.py monitor
@@ -106,6 +103,6 @@ The current prototype intentionally uses only LVGL built-in primitives and the d
 - visible `TOUCH OK` feedback after a successful GT1151 click event;
 - no external image/font assets yet.
 
-The display and touch composition remains isolated behind `mob_screen_create()`, so later product UI work does not need to modify TuyaOpen board initialization.
+The Playback display and touch composition remains isolated behind `mob_screen_create()`, so later product UI work does not need to modify TuyaOpen board initialization.
 
 When the touch event reaches LVGL, the UI changes to `TOUCH OK` and the debug UART prints `MOB touch confirmed`. The physical GT1151 click path, 270° display orientation, full-frame composition, and stable output without the previous dark band/flicker have been verified on the attached hardware.

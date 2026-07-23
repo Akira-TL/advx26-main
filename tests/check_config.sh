@@ -2,8 +2,8 @@
 set -euo pipefail
 
 project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-source_config="${project_root}/firmware/app_default.config"
-generated_config="${project_root}/firmware/.build/cache/using.config"
+source_config="${project_root}/firmware/playback/app_default.config"
+generated_config="${project_root}/firmware/playback/.build/cache/using.config"
 
 require_exact_line() {
   local file="$1"

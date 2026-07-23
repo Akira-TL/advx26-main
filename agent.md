@@ -5,7 +5,8 @@
 This repository contains the Tuya T5AI firmware and orchestration decisions for the MOB competition prototype.
 
 - Project root: `/home/akira/Projects/advx26`
-- Canonical firmware application: `firmware/`
+- Playback firmware: `firmware/playback/` Git submodule
+- Trigger firmware: `firmware/trigger/` reserved location; no implementation yet
 - Backend service: `backend/` Git submodule
 - Mobile client: `clients/soundpola-app/` Git submodule
 - TuyaOpen SDK: external checkout at `/home/akira/SDKs/TuyaOpen-v1.9.0`
@@ -40,7 +41,7 @@ Wayfinder produces local decisions and planning artifacts by default. Keep those
 5. Show the complete branch structure, not only the current branch.
 6. Provide optional build, flash, or validation commands when useful.
 
-Only operate on hardware identities explicitly assigned to this workstream. Treat additional connected boards as unmanaged: do not flash them, open their serial ports, or infer roles without direct user approval.
+Only operate on hardware identities explicitly assigned to this workstream. Playback changes belong in the `firmware/playback/` submodule and may target only USB identity `5AAE167197`. Do not add Trigger implementation to Playback. Treat additional connected boards as unmanaged: do not flash them, open their serial ports, or infer roles without direct user approval.
 
 Commit messages use lowercase `fix` or `feat`, followed by a module and a Chinese description, for example:
 

@@ -84,9 +84,9 @@ The application-facing seam through which Trigger firmware receives a Compact Co
 
 Playback Board retrieves immutable media assets with HTTP Range support. A failed segment may be retried three times with approximately 250 ms, 500 ms, and 1 s backoff while validating expected length and resource identity. Exhaustion reports a recoverable error to Trigger Board instead of silently restarting or advancing playback.
 
-## Firmware Applications
+## Firmware Repositories
 
-The two T5AI applications maintained in this repository: Trigger firmware and Playback firmware. They use separate application entry points and UI/device modules while sharing the Board Link protocol, validated session value objects, and common test fixtures.
+Playback firmware is maintained as the `firmware/playback/` Git submodule and owns only the output-side T5AI application. `firmware/trigger/` is a reserved parent-repository location for a future dedicated Trigger repository/submodule. Trigger implementation must not be added to the Playback repository. Cross-device protocol contracts remain parent-owned until a separate shared package is introduced.
 
 ## Demo Network Configuration
 

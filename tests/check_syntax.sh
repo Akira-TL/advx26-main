@@ -10,8 +10,8 @@ cc \
   -Werror \
   -fsyntax-only \
   -I"${project_root}/tests/stubs" \
-  -I"${project_root}/firmware/include" \
-  "${project_root}/firmware/src/main.c" \
-  "${project_root}/firmware/src/mob_screen.c"
+  -I"${project_root}/firmware/playback/include" \
+  "${project_root}/firmware/playback/src/main.c" \
+  "${project_root}/firmware/playback/src/mob_screen.c"
 
 echo "C syntax check passed."
