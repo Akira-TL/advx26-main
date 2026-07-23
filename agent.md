@@ -7,6 +7,7 @@ This repository contains the Tuya T5AI firmware and orchestration decisions for 
 - Project root: `/home/akira/Projects/advx26`
 - Canonical firmware application: `firmware/`
 - Backend service: `backend/` Git submodule
+- Mobile client: `clients/soundpola-app/` Git submodule
 - TuyaOpen SDK: external checkout at `/home/akira/SDKs/TuyaOpen-v1.9.0`
 - Code intelligence: CodeGraph in `.codegraph/` (database remains local and ignored)
 
@@ -14,7 +15,7 @@ This repository contains the Tuya T5AI firmware and orchestration decisions for 
 
 ### Issue tracker
 
-Issues and Wayfinder decision maps use the local Markdown tracker under `.scratch/`. See `docs/agents/issue-tracker.md`.
+Issues and Wayfinder decision maps may use the local Markdown tracker under `.scratch/`, but `.scratch/` is private working state: never add or commit it. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 
@@ -28,7 +29,7 @@ This is a single-context repository using root `CONTEXT.md` and `docs/adr/`. See
 
 When interviewing the user, ask multiple questions in one round when they are genuinely independent and can be answered in parallel. Split questions into later rounds only when one answer changes the available options or meaning of another question.
 
-Wayfinder produces decisions and planning artifacts by default. Do not implement the full feature directly from the map; hand the resolved map to specification and ticket-generation flows first.
+Wayfinder produces local decisions and planning artifacts by default. Keep those interaction artifacts under ignored `.scratch/`; durable product decisions belong in `CONTEXT.md`, ADRs, specifications, source code, or tests.
 
 ## Development workflow
 

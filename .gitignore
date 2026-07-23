@@ -9,6 +9,10 @@
 *.log
 __pycache__/
 
+# Local planning and throwaway prototypes
+/.scratch/
+/Sound-Visualization-Kaleidoscope-effect/
+
 # Early root-level drafts; firmware/ is the canonical application
 /CMakeLists.txt
 /app_default.config

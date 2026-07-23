@@ -1,6 +1,6 @@
-# MOB Tuya T5AI display
+# SoundPola AdventureX 2026
 
-Custom LVGL screen application for the Tuya T5AI-Board (`T5-E1-IPEX`) maintained in `/home/akira/Projects/advx26`.
+SoundPola competition workspace maintained in `/home/akira/Projects/advx26`. It contains the T5AI firmware, backend service, and mobile sharing client as separate project boundaries.
 
 ## Detected hardware
 
@@ -16,25 +16,27 @@ The initial target is the official **3.5-inch 320x480 ILI9488** display configur
 ## Layout
 
 ```text
-firmware/
+firmware/                 # canonical Tuya T5AI firmware
   CMakeLists.txt
   app_default.config
   config/
-    TUYA_T5AI_BOARD_LCD_3.5.config
   include/
-    mob_screen.h
   src/
-    main.c
-    mob_screen.c
-patches/
-  tuyaopen-v1.9.0-t5ai-display.patch
-scripts/
-  apply-tuyaopen-patches.sh
-tests/
-  stubs/                 # host-only headers for syntax checking
-  check_syntax.sh
-  check_config.sh
-  check_sdk_patch.sh
+backend/                  # FastAPI service Git submodule
+clients/
+  soundpola-app/          # mobile sharing client Git submodule
+patches/                  # project-owned TuyaOpen patches
+scripts/                  # build/setup helpers
+tests/                    # host syntax and configuration checks
+docs/                     # durable engineering documentation
+```
+
+Local discussion artifacts under `.scratch/` and the throwaway `Sound-Visualization-Kaleidoscope-effect/` prototype are intentionally excluded from the parent Git repository. Their local files remain available; the visualization prototype retains its own independent Git repository.
+
+After cloning the parent repository, initialize the maintained service and client repositories with:
+
+```bash
+git submodule update --init --recursive
 ```
 
 `firmware/src/main.c` owns TuyaOpen/LVGL startup. `firmware/src/mob_screen.c` owns all visual composition, so future screen redesigns do not need to touch board initialization.

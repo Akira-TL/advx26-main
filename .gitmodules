@@ -1,3 +1,7 @@
 [submodule "backend"]
 	path = backend
 	url = ../mob-backend.git
+
+[submodule "clients/soundpola-app"]
+	path = clients/soundpola-app
+	url = git@github.com:hankunlingccx-cell/advx-soundpola-app.git

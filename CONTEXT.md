@@ -38,7 +38,11 @@ The backend service that accepts a Shared Sound, prepares device-ready media, pu
 
 ## Media Package
 
-A cloud-side association of one Shared Sound, one selected Preset Video, equal-duration indexed JPEG frames and PCM audio, and the metadata needed by the two boards to present them as one experience. A competition Media Package is at most 30 seconds long.
+A cloud-side association of one Shared Sound, one selected Preset Video, equal-duration device-ready video and audio assets, and the metadata needed by the two boards to present them as one experience. A competition Media Package is at most 30 seconds long. The device video representation and the cloud audio compression format remain prototype decisions; WebM source storage, display decode format, and Bluetooth transport codec are distinct layers.
+
+## Device Media Profile
+
+The bounded video/audio representation consumed by Playback Board. It must be selected from formats that the T5AI can actually decode while maintaining BLE control and A2DP output. The current backend's WebM upload validation is legacy server behavior, not proof of device-side WebM/VP8/VP9 playback support.
 
 ## Compact Content URL
 
@@ -50,7 +54,7 @@ The bounded lifecycle started by one NFC-triggered content selection. It include
 
 ## Playback Command
 
-A Trigger Board request that changes a Playback Session. The first protocol vocabulary is `LOAD_SESSION`, `PLAY`, `PAUSE`, `SEEK_MS`, and `STOP`.
+A Trigger Board request that changes a Playback Session. The first protocol vocabulary is `LOAD_SESSION`, `PLAY`, `PAUSE`, `SEEK_MS`, and `STOP`. `STOP` returns Playback Board to its idle screen while Trigger Board retains the current content panel and replay action.
 
 ## Playback Report
 
@@ -74,7 +78,11 @@ The phone-facing interface used to record or select a Shared Sound, upload it, w
 
 ## NFC URL Source
 
-The application-facing seam through which Trigger firmware receives a Compact Content URL decoded from a PN532 NDEF record. This workstream consumes the URL but does not own PN532 wiring, pin assignment, electrical interface selection, or low-level transport/driver integration.
+The application-facing seam through which Trigger firmware receives a Compact Content URL decoded from a PN532 NDEF record. This workstream consumes the URL but does not own PN532 wiring, pin assignment, electrical interface selection, or low-level transport/driver integration. One continuously present tag triggers only once; the source rearms after tag removal and applies an additional two-second duplicate debounce.
+
+## Media Fetch Retry
+
+Playback Board retrieves immutable media assets with HTTP Range support. A failed segment may be retried three times with approximately 250 ms, 500 ms, and 1 s backoff while validating expected length and resource identity. Exhaustion reports a recoverable error to Trigger Board instead of silently restarting or advancing playback.
 
 ## Firmware Applications
 
