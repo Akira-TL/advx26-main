@@ -1,13 +1,14 @@
 # MOB Tuya T5AI display
 
-Custom LVGL screen application for the Tuya T5AI-Board (`T5-E1-IPEX`) connected in `/home/akira/Projects/mob`.
+Custom LVGL screen application for the Tuya T5AI-Board (`T5-E1-IPEX`) maintained in `/home/akira/Projects/advx26`.
 
 ## Detected hardware
 
 - USB bridge: `1a86:55d2 QinHeng USB Dual_Serial`
-- Download port: `/dev/ttyACM0`
-- Log port: `/dev/ttyACM1`
+- Managed candidate `5AAE167197`: download `/dev/ttyACM0`, log `/dev/ttyACM1`
+- Managed candidate `5AAE167460`: download `/dev/ttyACM2`, log `/dev/ttyACM3`
 - Log baud rate: `460800`
+- Any additional connected board is unmanaged by this workstream until the user explicitly assigns it. Do not flash it, open its serial ports, or infer a Trigger/Playback role for it.
 - Existing firmware is already refreshing LCD and LVGL, so the physical display path is working.
 
 The initial target is the official **3.5-inch 320x480 ILI9488** display configuration. If the attached panel is the 0.9-inch ST7735 board, change the board configuration before flashing.
@@ -62,11 +63,11 @@ Install TuyaOpen outside this repository, apply the project-owned display patch,
 
 ```bash
 git clone --branch v1.9.0 https://github.com/tuya/TuyaOpen.git ~/SDKs/TuyaOpen-v1.9.0
-cd /home/akira/Projects/mob
+cd /home/akira/Projects/advx26
 bash scripts/apply-tuyaopen-patches.sh ~/SDKs/TuyaOpen-v1.9.0
 
 source ~/SDKs/TuyaOpen-v1.9.0/export.sh
-cd /home/akira/Projects/mob/firmware
+cd /home/akira/Projects/advx26/firmware
 tos.py check
 tos.py config choice -c TUYA_T5AI_BOARD_LCD_3.5.config
 tos.py build
@@ -80,14 +81,16 @@ Use the lower-numbered virtual serial port for downloading and the higher-number
 
 ```bash
 source ~/SDKs/TuyaOpen-v1.9.0/export.sh
-cd /home/akira/Projects/mob/firmware
-tos.py flash -p /dev/ttyACM0
+cd /home/akira/Projects/advx26/firmware
+
+# Example for managed candidate 5AAE167197 only.
+tos.py flash -p /dev/serial/by-id/usb-1a86_USB_Dual_Serial_5AAE167197-if00
 
 tos.py monitor
-# Select /dev/ttyACM1 and 460800 baud when prompted.
+# Select usb-1a86_USB_Dual_Serial_5AAE167197-if02 and 460800 baud.
 ```
 
-The standalone `tyutool` alternative uses `-p /dev/ttyACM0` when an explicit download port is required.
+Resolve the intended board by its stable USB serial identity before every flash. Do not substitute a newly enumerated `/dev/ttyACM*` path or operate on an unmanaged board. The standalone `tyutool` alternative accepts the same stable `-p /dev/serial/by-id/...` download path.
 
 ## Current screen
 

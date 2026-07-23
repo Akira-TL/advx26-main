@@ -88,6 +88,10 @@ Git-ignored build-time values containing the fixed Wi-Fi credentials and public 
 
 The single A2DP Sink selected for the demo. It is manually paired once with Playback Board, stored as the only permitted speaker target, and automatically reconnected on later boots.
 
+## Unmanaged Board
+
+Any additional connected development board that the user has not explicitly assigned to the Trigger or Playback role. It is outside this workstream: agents must not flash it, open its serial ports, change its configuration, or infer its role from USB enumeration. It may be recorded as present without being identified or managed.
+
 ## Board Link Message
 
 One application-level JSON document carried over the Board Link. ATT values contain a fixed binary fragment envelope plus UTF-8 JSON bytes. Reassembled messages are limited to 4096 bytes and individual URL fields to 1024 bytes.
