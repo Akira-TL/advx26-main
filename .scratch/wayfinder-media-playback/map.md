@@ -58,18 +58,21 @@ Produce an implementation-ready technical specification, ADR set, and dependency
 - [Set the dual-Bluetooth prototype acceptance threshold](issues/43-decide-dual-bluetooth-prototype-acceptance.md) — Require a 60-second zero-disconnect run, 500 ms reports, 20 timely command/ACK exchanges, and no underruns or audible interruption.
 - [Use partial prebuffering with a PCM-derived media clock](issues/16-decide-buffering-and-sync-architecture.md) — Preload the frame index, 0.5–1 second of decoded PCM, and 3–5 JPEG frames; stream the remainder, drop late video frames, and never stall audio for video.
 - [Bound media corruption and decoder recovery](issues/17-decide-disconnect-and-recovery.md) — Skip isolated JPEG failures, resynchronize isolated MP3 failures with timeline-preserving silence, fail after three consecutive errors, and distinguish retryable network failure from immutable content corruption.
+- [Use fixed binary media indexes and layered integrity checks](issues/45-decide-media-index-and-integrity.md) — Publish 16-byte little-endian JPEG and MP3 frame records with CRC32, while the manifest carries exact lengths, SHA-256, ETag/revision identity, and index version.
+- [Use bounded in-memory pause, seek, and replay caching](issues/46-decide-pause-seek-cache-behavior.md) — Pause prefetches only to configured high-water marks; out-of-buffer seek resets decoder queues and reopens indexed Range reads without changing the session identity.
+- [Publish Media Packages atomically](issues/47-decide-atomic-media-publication.md) — Build and validate a private staging revision, then expose the immutable READY descriptor and every asset together.
+- [Freeze Board Link UUIDs and the v1 fragment header](issues/48-decide-board-link-wire-constants.md) — Use stable private Service/Command/Report UUIDs and a fixed 16-byte little-endian envelope without an additional application checksum.
 
 ## Active decision frontier
 
 - [Provide and approve the fixed prototype speaker](issues/44-provide-prototype-speaker.md).
 - After the speaker is available, execute [the simultaneous BLE and A2DP prototype](issues/19-prototype-dual-bluetooth-coexistence.md), followed by [the JPEG/MP3 playback prototype](issues/20-prototype-jpeg-pcm-playback.md).
-- After recovery policy and both prototypes resolve, define [end-to-end demo acceptance](issues/18-define-demo-acceptance.md).
+- After the remaining decisions and both prototypes resolve, define [end-to-end demo acceptance](issues/18-define-demo-acceptance.md).
 
 ## Not yet specified
 
-- Exact fixed-width BLE envelope byte offsets and UUID constants, to be captured in the implementation specification from the resolved protocol decisions.
 - Decoder task structure, memory ownership, exact ring-buffer sizes, final JPEG quality, and calibrated speaker latency after the media prototype.
-- Backend schema migration and audio-only preparation implementation.
+- Backend schema migration, audio normalization implementation, index generation, and atomic publication ticket breakdown.
 - Firmware module boundaries and test seams after the hardware prototypes settle the runtime seams.
 - The exact fixed speaker name/address until a physical A2DP Sink is supplied and approved.
 - Final end-to-end acceptance procedure after all preceding decisions resolve.
