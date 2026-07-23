@@ -59,3 +59,15 @@ A Playback Board message that acknowledges or rejects a command, reports current
 ## Trigger Control Panel
 
 The minimal user interface shown on the Trigger Board after it resolves a Compact Content URL. It presents a generated content label, duration, playback state, progress, standard playback controls, and visible feedback for local interaction. It does not require creator-authored title or description and intentionally hides routine BLE, speaker, and transport diagnostics from the normal experience.
+
+## Sound Fragment Label
+
+The neutral Cloud Media Service-generated identity shown for an untitled Shared Sound. The MVP format is `声音碎片 #XXXX`, where `XXXX` is a short stable identifier derived from the immutable content identifier. Recording or submission time may be shown as secondary information.
+
+## Preset Assignment
+
+The persisted choice of one enabled Preset Video for a new Media Package. The backend derives the initial choice deterministically from the immutable content identifier, then stores the selected preset so later pool changes do not alter an existing published package.
+
+## Sharing Interface
+
+The phone-facing interface used to record or select a Shared Sound, upload it, wait for the Media Package to become ready, and write the resulting Compact Content URL to an NFC tag. The Trigger Board is not responsible for recording, uploading, or writing NFC in the normal product flow.
