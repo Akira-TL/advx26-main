@@ -9,6 +9,10 @@
 *.log
 __pycache__/
 
+# Local agent context and planning files
+/agent.md
+/CONTEXT.md
+
 # Local planning and throwaway prototypes
 /Sound-Visualization-Kaleidoscope-effect/
 
@@ -25,7 +29,6 @@ __pycache__/
 /backend.zip
 /api/
 tmp/
-.scratch/
 .codegraph/
 patches/
 
