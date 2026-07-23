@@ -5,8 +5,8 @@ Custom LVGL screen application for the Tuya T5AI-Board (`T5-E1-IPEX`) maintained
 ## Detected hardware
 
 - USB bridge: `1a86:55d2 QinHeng USB Dual_Serial`
-- Managed candidate `5AAE167197`: download `/dev/ttyACM0`, log `/dev/ttyACM1`
-- Managed candidate `5AAE167460`: download `/dev/ttyACM2`, log `/dev/ttyACM3`
+- Playback Board `5AAE167197`: download `/dev/ttyACM0`, log `/dev/ttyACM1`
+- Trigger Board `5AAE167460`: download `/dev/ttyACM2`, log `/dev/ttyACM3`
 - Log baud rate: `460800`
 - Any additional connected board is unmanaged by this workstream until the user explicitly assigns it. Do not flash it, open its serial ports, or infer a Trigger/Playback role for it.
 - Existing firmware is already refreshing LCD and LVGL, so the physical display path is working.

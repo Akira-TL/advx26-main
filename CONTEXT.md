@@ -86,7 +86,11 @@ Git-ignored build-time values containing the fixed Wi-Fi credentials and public 
 
 ## Fixed Speaker
 
-The single A2DP Sink selected for the demo. It is manually paired once with Playback Board, stored as the only permitted speaker target, and automatically reconnected on later boots.
+The single A2DP Sink approved for the demo. It is manually paired once with Playback Board, stored as the only permitted speaker target, and automatically reconnected on later boots. No physical speaker identity is assigned yet, so Bluetooth-audio hardware prototypes remain blocked.
+
+## Managed Board Identity
+
+The stable USB serial identity used to authorize hardware operations and assign a board role. `5AAE167197` is the Playback Board and `5AAE167460` is the Trigger Board. Mutable `/dev/ttyACM*` numbers are observations only; flashing and monitoring must resolve the corresponding `/dev/serial/by-id/` path.
 
 ## Unmanaged Board
 
