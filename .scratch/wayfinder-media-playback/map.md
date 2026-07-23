@@ -62,6 +62,10 @@ Produce an implementation-ready technical specification, ADR set, and dependency
 - [Use bounded in-memory pause, seek, and replay caching](issues/46-decide-pause-seek-cache-behavior.md) — Pause prefetches only to configured high-water marks; out-of-buffer seek resets decoder queues and reopens indexed Range reads without changing the session identity.
 - [Publish Media Packages atomically](issues/47-decide-atomic-media-publication.md) — Build and validate a private staging revision, then expose the immutable READY descriptor and every asset together.
 - [Freeze Board Link UUIDs and the v1 fragment header](issues/48-decide-board-link-wire-constants.md) — Use stable private Service/Command/Report UUIDs and a fixed 16-byte little-endian envelope without an additional application checksum.
+- [Normalize common phone audio into bounded MP3](issues/49-decide-source-audio-normalization.md) — Inspect source bytes with FFprobe, accept common phone audio formats up to 50 MiB, retain at most 30 seconds, and publish 44.1 kHz 128 kbps CBR MP3 with at most two channels.
+- [Use immutable byte-range HTTP transport](issues/50-decide-immutable-http-transport.md) — Published revision resources expose strong SHA-256 ETags, year-long immutable caching, HEAD, single byte ranges, `If-Range`, exact lengths, and strict validator checks.
+- [Freeze Playback states and errors](issues/51-decide-playback-state-and-errors.md) — Use nine stable states, eight stable fatal error categories, immediate state reports, retained play/pause intent, and enum-driven Trigger behavior.
+- [Freeze the Board Link JSON body schema](issues/52-decide-board-link-json-schema.md) — Every body uses one strict versioned envelope, fixed command/report enums, bounded required fields, media positions instead of wall-clock timestamps, and stable ACK/NACK correlation.
 
 ## Active decision frontier
 
