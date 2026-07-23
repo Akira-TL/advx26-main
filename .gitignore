@@ -10,7 +10,6 @@
 __pycache__/
 
 # Local planning and throwaway prototypes
-/.scratch/
 /Sound-Visualization-Kaleidoscope-effect/
 
 # Early root-level drafts; firmware/ is the canonical application
@@ -25,3 +24,10 @@ __pycache__/
 /ESP32_MPU6050_V1.1_Agent开发包.zip
 /backend.zip
 /api/
+tmp/
+.scratch/
+.codegraph/
+patches/
+
+# External firmware submodule workspace
+/firmware/playback/
