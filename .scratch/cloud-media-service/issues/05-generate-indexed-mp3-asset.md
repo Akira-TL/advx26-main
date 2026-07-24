@@ -4,7 +4,7 @@
 
 **Blocked by:** 04 — Probe, repair, and normalize source audio.
 
-**Status:** ready-for-agent
+**Status:** claimed
 
 - [ ] The worker parses every complete MP3 frame in normalized `audio.mp3` without relying on approximate bitrate arithmetic.
 - [ ] Generated `audio.idx` begins with the exact `AIX1` version-1 header and uses 16-byte little-endian records.
