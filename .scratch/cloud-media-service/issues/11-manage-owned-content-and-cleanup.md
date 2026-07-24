@@ -4,7 +4,7 @@
 
 **Blocked by:** 03 — Run durable processing jobs with restart recovery; 09 — Publish the complete READY media package atomically.
 
-**Status:** ready-for-agent
+**Status:** claimed
 
 - [ ] A User Token can list and inspect only content owned by its resolved user identity across processing, READY, FAILED, and revoked/deleted states.
 - [ ] Owner responses expose safe source metadata, normalized duration when known, current stage, timestamps, generated label, READY NFC URL, and stable failure information.

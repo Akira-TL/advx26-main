@@ -46,8 +46,9 @@
 - Ticket 06 is resolved by backend commits `3b95a8e` and `26d6a67`.
 - Ticket 07 is resolved by visualization commit `69a700d`.
 - Ticket 08 is resolved by backend commit `fb6b4e7`.
-- Ticket 09 is claimed and is the current implementation frontier.
-- Tickets 10 and 11 may proceed in parallel after publication and job prerequisites are satisfied.
+- Ticket 09 is resolved by backend commit `5157397`.
+- Ticket 10 is resolved by backend commit `4ce4df1`.
+- Ticket 11 is claimed and is the current implementation frontier.
 - Ticket 12 is the final contract and documentation cleanup after both device delivery and owner lifecycle are complete.
 
 ## Repository boundaries

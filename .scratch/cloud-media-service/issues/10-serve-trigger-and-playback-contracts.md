@@ -4,15 +4,17 @@
 
 **Blocked by:** 09 — Publish the complete READY media package atomically.
 
-**Status:** ready-for-agent
+**Status:** resolved
 
-- [ ] Server configuration requires separate fixed Trigger and Playback Tokens outside Git and maps them to stable roles.
-- [ ] Token comparison is constant-time; missing, unknown, and wrong-role tokens are rejected before content or object access.
-- [ ] A READY Compact Content URL returns the complete Trigger-facing JSON directly with HTTP 200 only for the Trigger role.
-- [ ] The Compact Content response includes immutable `content_id`, duration, generated label, autoplay/end behavior, controls, and normalized Playback descriptors while omitting owner and source metadata.
-- [ ] Playback asset endpoints require the Playback role and expose stable absolute URLs for video, audio, and audio index.
-- [ ] Immutable responses provide exact Content-Length, strong SHA-derived ETag, `Cache-Control: private, max-age=31536000, immutable`, and `Vary: Authorization`.
-- [ ] Media endpoints support full GET, HEAD, one prefix/open/suffix byte range, matching `If-Range`, mismatching `If-Range`, `206`, exact Content-Range, and correct `416` behavior.
-- [ ] Non-READY, FAILED, deleted, missing, and corrupt-object content never returns playable descriptors or bytes.
-- [ ] User Tokens cannot call Trigger or Playback routes, and device tokens cannot upload, list, retry, delete, or claim content ownership.
-- [ ] ASGI tests cover the complete role matrix, descriptor schema, headers, body identity, Range behavior, and no cross-content byte concatenation.
+**Resolved by:** backend commit `4ce4df1 feat(device): 实现设备鉴权与媒体分发`
+
+- [x] Separate fixed Trigger and Playback Tokens are loaded from deployment configuration and mapped to stable roles.
+- [x] Constant-time comparison and strict missing, unknown, and wrong-role rejection occur before object access.
+- [x] Trigger resolves complete READY Compact Content directly through HTTP 200.
+- [x] Compact Content exposes presentation/playback data and omits owner/source metadata.
+- [x] Playback receives absolute video, audio, and index URLs and role-protected immutable bytes.
+- [x] Responses include exact length, strong ETag, immutable private caching, and Authorization variance.
+- [x] GET, HEAD, prefix/open/suffix Range, If-Range, 206, Content-Range, and 416 are implemented.
+- [x] Non-READY, missing, deleted, and corrupt objects never return playable content.
+- [x] User and device roles cannot cross into each other's APIs.
+- [x] ASGI tests cover role matrix, schema, headers, exact bytes, ranges, and corruption rejection.
