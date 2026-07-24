@@ -4,7 +4,7 @@
 
 **Blocked by:** 05 — Generate and validate the indexed MP3 asset; 08 — Encode and validate the constrained H.264 video.
 
-**Status:** ready-for-agent
+**Status:** claimed
 
 - [ ] Publication requires validated `video.mp4`, `audio.mp3`, `audio.idx`, normalized duration, generated display label, and all integrity metadata.
 - [ ] Manifest uses schema version 1, immutable `content_id`, state READY, `t5ai-h264-mp3-v1`, Trigger presentation data, and normalized Playback descriptors.
