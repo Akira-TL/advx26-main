@@ -4,7 +4,7 @@
 
 **Blocked by:** 03 — Run durable processing jobs with restart recovery.
 
-**Status:** ready-for-agent
+**Status:** claimed
 
 - [ ] FFprobe inspects uploaded bytes rather than trusting filename extension or client MIME type.
 - [ ] WAV, MP3, M4A/AAC, Ogg/Opus, and WebM audio fixtures are accepted when they contain a decodable non-encrypted audio stream.
