@@ -1,7 +1,7 @@
 # Implement indexed MP3 audio path
 
 Type: task
-Status: open
+Status: resolved
 Blocked by: 04, 05
 
 ## Goal
@@ -31,6 +31,12 @@ Expose prepare, fill, consume, seek, pause, resume, and close operations over th
 - network access and MP3 decode can be paused independently while preserving bounded buffers;
 - the module has no dependency on MP4 demux or H.264 decoder internals.
 
+## Result
+
+Implemented an indexed MP3 source with immutable HTTP Range reads, per-record CRC32 validation, strict MPEG-1 Layer III/44.1 kHz/128 kbps format checks, Helix decode into a bounded PSRAM PCM ring, exact consumed-frame accounting, independent fetch/output pause controls, ten-record seek warm-up, timeline-preserving silence recovery, and stable fatal termination after three consecutive failures or a 500 ms recovery deadline.
+
+Validation completed with strict host compilation, allocator ownership checks, normal/pause/seek/recovery tests, AddressSanitizer/UndefinedBehaviorSanitizer, GCC static analysis, Helix symbol resolution, and a full `TUYA_T5AI_BOARD` firmware build.
+
 ## Out of scope
 
-A2DP connection behavior, MP4/H.264 scheduling, tests, build, flash, and audible-quality validation.
+A2DP connection behavior, MP4/H.264 scheduling, flash, and audible-quality validation.

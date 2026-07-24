@@ -1,7 +1,7 @@
 # Implement A2DP Speaker Link functionality
 
 Type: task
-Status: open
+Status: claimed
 Blocked by: 01, 07
 
 ## Goal

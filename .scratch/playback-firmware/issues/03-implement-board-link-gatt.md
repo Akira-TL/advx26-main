@@ -1,7 +1,7 @@
 # Implement Board Link GATT peripheral
 
 Type: task
-Status: claimed
+Status: resolved
 Blocked by: 02
 
 ## Goal
@@ -32,6 +32,12 @@ Expose command-delivery and report-send callbacks. Hide Tuya/Beken GATT handles,
 - BLE disconnect preserves the active Playback session in memory;
 - no Trigger, NFC, or BLE Central behavior is introduced.
 
+## Result
+
+Implemented the fixed Playback Board GATT peripheral with a write-with-response Command characteristic and Notify Report characteristic. Bluetooth callbacks only enqueue bounded transport events; one worker thread performs fragment reassembly, JSON decoding, HELLO negotiation, command delivery, report serialization and notification fragmentation. Disconnect resets transport state and restarts advertising without emitting STOP or destroying the playback session.
+
+Validation completed with the existing host GATT test, AddressSanitizer test and a full `TUYA_T5AI_BOARD` firmware build.
+
 ## Out of scope
 
-Media execution, pairing UI, bonding UI, tests, build, flash, and radio coexistence validation.
+Media execution, pairing UI, bonding UI, flash, and radio coexistence validation.
