@@ -43,7 +43,9 @@
 - Ticket 03 is resolved by backend commit `76208b7`.
 - Ticket 04 is resolved by backend commit `94d000e`.
 - Ticket 05 is resolved by backend commit `c1c7c8a`.
-- Ticket 06 is claimed and is the current implementation frontier.
+- Ticket 06 is resolved by backend commits `3b95a8e` and `26d6a67`.
+- Ticket 07 is resolved by visualization commit `69a700d`.
+- Ticket 08 is claimed and is the current implementation frontier.
 - Ticket 09 requires both the indexed-audio and encoded-video branches.
 - Tickets 10 and 11 may proceed in parallel after publication and job prerequisites are satisfied.
 - Ticket 12 is the final contract and documentation cleanup after both device delivery and owner lifecycle are complete.

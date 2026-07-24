@@ -4,7 +4,7 @@
 
 **Blocked by:** 07 — Render explicit deterministic visual frames.
 
-**Status:** ready-for-agent
+**Status:** claimed
 
 - [ ] FFmpeg consumes the ordered frame stream without an intermediate real-time WebM recording.
 - [ ] Output contains exactly one video track and no audio, subtitle, alternate, or fragmented-MP4 tracks.
