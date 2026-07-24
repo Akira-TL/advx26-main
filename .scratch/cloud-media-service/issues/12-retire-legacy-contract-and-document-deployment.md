@@ -4,14 +4,16 @@
 
 **Blocked by:** 10 — Serve authenticated Trigger and Playback contracts; 11 — Manage owned content, retry failures, and clean staging data.
 
-**Status:** claimed
+**Status:** resolved
 
-- [ ] Required metadata JSON, creator metadata in upload, user video, STL/model upload and validation, legacy package listing, model-file routes, ZIP bundle routes, and old soft-delete semantics are removed from the active API.
-- [ ] Legacy schemas, configuration limits, validation helpers, storage assumptions, tests, Swagger artifacts, and documentation that have no remaining caller are deleted.
-- [ ] Health and readiness document their distinct semantics; readiness checks SQLite, Object Store, FFmpeg, FFprobe, Node/renderer assets, Chromium launchability, and worker availability.
-- [ ] Configuration documents User Token security behavior, fixed Trigger and Playback Tokens, CORS, storage roots, upload limits, worker lease/retry limits, process timeouts, cleanup bounds, and required binaries.
-- [ ] OpenAPI describes token issuance, owned upload/list/status/retry/delete behavior, processing states and errors, Compact Content, playback descriptors, HEAD, Range, `If-Range`, cache headers, and role-specific authentication.
-- [ ] Example commands demonstrate issuing a User Token, uploading audio, polling READY, resolving with Trigger Token, and downloading ranges with Playback Token without exposing real secrets.
-- [ ] Docker or host deployment installs and validates FFmpeg/FFprobe, Node renderer dependencies, and Headless Chromium requirements.
-- [ ] The complete new backend test suite passes from a clean environment, and no active test asserts the obsolete package contract.
-- [ ] A final Standards and Spec review finds no reachable legacy product path or undocumented security role.
+**Resolved by:** backend commit `6425e4a feat(backend): 完成云端媒体服务正式契约`
+
+- [x] Legacy metadata/video/model/package/bundle routes and soft-delete behavior are absent from the active API.
+- [x] Legacy schema, configuration, validators, tests, and embedded Swagger content have no active caller; generated FastAPI OpenAPI is canonical.
+- [x] Health and readiness have distinct documented semantics and verify storage, media tools, device Tokens, renderer/Chromium, and worker when enabled.
+- [x] Configuration documents User Token behavior, device Tokens, CORS, storage, limits, leases, retries, timeouts, cleanup, and binaries.
+- [x] OpenAPI contains user, content, Trigger, Playback, HEAD, Range, If-Range, caching, and role-specific security contracts.
+- [x] README examples cover Token issuance, upload, status polling, retry/delete, Trigger resolution, and Playback ranges with placeholders only.
+- [x] Host and root-context multi-stage Docker deployment include FFmpeg/FFprobe, Node, renderer assets, Puppeteer, and Chromium dependencies.
+- [x] The complete backend suite passes with 53 tests, including a full source-to-READY worker integration test.
+- [x] CodeGraph finds no reachable legacy product symbols and all three security roles are documented in generated OpenAPI.

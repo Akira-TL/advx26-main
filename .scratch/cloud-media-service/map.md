@@ -49,7 +49,8 @@
 - Ticket 09 is resolved by backend commit `5157397`.
 - Ticket 10 is resolved by backend commit `4ce4df1`.
 - Ticket 11 is resolved by backend commit `d3fffb0`.
-- Ticket 12 is claimed and is the final implementation frontier.
+- Ticket 12 is resolved by backend commit `6425e4a`.
+- All Cloud Media Service implementation tickets are resolved.
 
 ## Repository boundaries
 
