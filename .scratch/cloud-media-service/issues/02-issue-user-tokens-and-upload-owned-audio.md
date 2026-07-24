@@ -4,7 +4,7 @@
 
 **Blocked by:** 01 — Establish the Cloud Media Service foundation.
 
-**Status:** ready-for-agent
+**Status:** claimed
 
 - [ ] A token-issuance request creates one User identity and returns one long-lived opaque User Token exactly once.
 - [ ] SQLite stores a one-way token digest and metadata, never the recoverable plaintext token.

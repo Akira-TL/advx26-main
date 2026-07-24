@@ -38,7 +38,8 @@
 
 ## Frontier
 
-- Ticket 01 is the only current implementation frontier.
+- Ticket 01 is resolved by backend commit `e21bbb4`.
+- Ticket 02 is claimed and is the current implementation frontier.
 - Tickets 05 and 06 may proceed in parallel after ticket 04.
 - Ticket 09 requires both the indexed-audio and encoded-video branches.
 - Tickets 10 and 11 may proceed in parallel after publication and job prerequisites are satisfied.
