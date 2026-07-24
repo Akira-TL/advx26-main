@@ -2,7 +2,7 @@
 
 Type: grilling
 Status: resolved
-Blocked by: 10, 14
+Blocked by: 10, 14, 54
 
 ## Question
 
@@ -10,13 +10,12 @@ What normalized document must the Cloud Media Service expose, and what subset mu
 
 ## Answer
 
-A Compact Content URL returns one immutable Trigger-facing JSON document with these stable sections:
+A READY Compact Content URL returns one immutable Trigger-facing JSON document after validating the fixed Trigger Token:
 
 ```json
 {
   "schema_version": 1,
   "content_id": "immutable-content-id",
-  "revision": 1,
   "state": "READY",
   "duration_ms": 12000,
   "trigger": {
@@ -28,7 +27,7 @@ A Compact Content URL returns one immutable Trigger-facing JSON document with th
   "playback": {
     "profile": "t5ai-h264-mp3-v1",
     "video": {
-      "url": "https://server/assets/.../video.mp4",
+      "url": "https://server/api/v1/contents/.../assets/video",
       "format": "MP4_H264",
       "codec": "H264",
       "codec_profile": "BASELINE",
@@ -42,8 +41,8 @@ A Compact Content URL returns one immutable Trigger-facing JSON document with th
       "etag": "strong-etag"
     },
     "audio": {
-      "url": "https://server/assets/.../audio.mp3",
-      "index_url": "https://server/assets/.../audio.idx",
+      "url": "https://server/api/v1/contents/.../assets/audio",
+      "index_url": "https://server/api/v1/contents/.../assets/audio-index",
       "format": "MP3_CBR",
       "bitrate_kbps": 128,
       "sample_rate": 44100,
@@ -56,8 +55,10 @@ A Compact Content URL returns one immutable Trigger-facing JSON document with th
 }
 ```
 
-The Trigger Board validates `schema_version`, `state`, duration, and the named device profile. It creates a local `session_id`, then sends only the normalized `playback` descriptor plus `content_id`, `revision`, `duration_ms`, and `session_id` over the Board Link.
+One upload creates one immutable `content_id`; the competition contract does not add a separate public revision number. Reprocessing or republishing creates a new content item and NFC URL rather than mutating READY bytes.
 
-The video descriptor does not expose a separate `video.idx`; MP4 sample timing, byte offsets, sync samples, and codec initialization data come from the MP4 metadata. The audio descriptor retains `audio.idx` for precise MP3 frame seeking.
+The Trigger Board validates `schema_version`, `state`, duration, and profile, creates a local `session_id`, then sends the normalized `playback` descriptor plus `content_id`, `duration_ms`, and `session_id` over the Board Link. The Trigger Token is never forwarded.
 
-The first contract does not require creator-supplied title, description, author, custom actions, or STL data. Asset URLs are absolute and immutable for the published revision. Exact decoder implementation and final bitrate tuning are implementation details rather than new product decisions.
+Asset URLs are absolute stable backend endpoints, not anonymous object paths or signed URLs. Playback supplies its own fixed Playback Token on every descriptor, `GET`, `HEAD`, and Range request. The video descriptor has no separate video index; MP4 sample tables provide video timing and ranges. `audio.idx` remains mandatory for precise MP3 seeking.
+
+User ownership and source-object metadata are intentionally absent from the device document. They remain available only through User Token-protected management APIs.

@@ -2,7 +2,7 @@
 
 Type: grilling
 Status: resolved
-Blocked by: 29
+Blocked by: 29, 53
 
 ## Question
 
@@ -10,8 +10,8 @@ Is the phone Sharing Interface part of this repository and current implementatio
 
 ## Answer
 
-The Sharing Interface is external to this repository and is not part of the current development workstream. Another project or team owns recording/selecting a Shared Sound, uploading it, waiting for readiness, and writing the Compact Content URL to NFC.
+The Sharing Interface remains external to this repository and is not part of the current backend and firmware development workstream. Another project owns recording or selecting a Shared Sound, requesting and persisting the user's opaque User Token, uploading the source audio, polling the owned processing state, and writing the READY Compact Content URL to NFC.
 
-This repository owns the backend API contract that the external client consumes. When the external code is synchronized later, integration work must conform to the immutable Compact Content URL and audio-only sharing decisions already recorded here; it must not reintroduce user-uploaded video, mandatory title/description fields, or a different manifest format.
+This repository owns the backend contract consumed by that client, including User Token issuance and recognition, user-content ownership, source-audio upload, asynchronous processing state, immutable content publication, and the NFC URL returned after readiness.
 
-For local testing, backend tests and small command-line fixtures may emulate the external client, but they are not a replacement mobile product.
+When the external client is synchronized later, it must not reintroduce user-uploaded video, STL data, mandatory creator-authored title or description, synchronous media rendering in the upload request, or a different ownership model. Backend tests and small command-line fixtures may emulate the external client for local development.

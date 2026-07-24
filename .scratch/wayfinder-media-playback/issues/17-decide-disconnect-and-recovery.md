@@ -18,6 +18,6 @@ Use bounded recovery that preserves the audio timeline without hiding persistent
 - Failure to find and decode a valid IDR within approximately two seconds of media time, or two consecutive GOP recovery failures, terminates the session with `H264_DECODE_FAILED`.
 - MP3 decoding searches for the next valid indexed frame after an isolated decode error. The missing interval is represented by equal-duration silence so the PCM-derived media clock remains continuous. Three consecutive MP3 frame failures, or failure to resynchronize within 500 ms of media time, terminates the session.
 - Network retry exhaustion is reported to Trigger as a retryable network error.
-- Immutable asset length, MP4 metadata, audio index, range, ETag, or checksum mismatch is reported as `CONTENT_INVALID`. Trigger shows “内容暂不可用” and does not automatically loop requests against the same revision.
+- Immutable asset length, MP4 metadata, audio index, range, ETag, or checksum mismatch is reported as `CONTENT_INVALID`. Trigger shows “内容暂不可用” and does not automatically loop requests against the same immutable content identity.
 
-Decoder recovery never rewinds the current session silently, never blocks audio while waiting for video recovery, and never substitutes another Preset Video for a corrupt immutable revision.
+Decoder recovery never rewinds the current session silently, never blocks audio while waiting for video recovery, and never substitutes another visual or content item for corrupt immutable media.

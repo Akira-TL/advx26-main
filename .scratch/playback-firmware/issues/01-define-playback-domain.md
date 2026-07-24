@@ -12,7 +12,7 @@ Create the Playback-side domain types and transition rules required by every lat
 
 Define:
 
-- `playback_session_t` with `session_id`, `content_id`, revision, duration, profile, asset descriptors, and autoplay/end behavior;
+- `playback_session_t` with `session_id`, immutable `content_id`, duration, profile, asset descriptors, and autoplay/end behavior;
 - `playback_command_t` for `HELLO`, `GET_STATUS`, `LOAD_SESSION`, `PLAY`, `PAUSE`, `SEEK_MS`, and `STOP`;
 - `playback_report_t` for handshake, ACK/NACK, state, progress, completion, and error reports;
 - the fixed Playback states and error enums from Wayfinder issues 51 and 52;

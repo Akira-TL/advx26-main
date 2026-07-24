@@ -10,12 +10,15 @@ Which module owns the media package contract, and what legacy behavior is remove
 
 ## Answer
 
-The FastAPI module in the `backend/` Git submodule is the canonical Cloud Media Service and owns the manifest/API contract. Its current Swagger and implementation are a baseline to update, not a frozen contract.
+The FastAPI module in the `backend/` Git submodule is the canonical Cloud Media Service and owns the user-token, upload, processing-state, object-storage, Compact Content, manifest, and authenticated media-delivery contracts. Its current Swagger and implementation are a baseline to replace, not a frozen contract.
 
-The new contract accepts a user-provided Shared Sound, pairs it with a cloud-owned Preset Video, and publishes:
+The new contract accepts one raw Shared Sound from an authenticated user, permanently retains that original source audio, and performs the complete cloud media pipeline:
 
-- one device-ready `video.mp4` containing a constrained H.264 video track;
-- one independent `audio.mp3` asset plus `audio.idx` for precise audio seeking;
-- immutable playback metadata for the `t5ai-h264-mp3-v1` profile.
+- inspect and repair supported input media with FFprobe and FFmpeg;
+- normalize the audio and retain at most the first 30 seconds;
+- render the selected `Sound-Visualization-Kaleidoscope-effect` visual in Headless Chromium;
+- transcode the captured visual into constrained fast-start MP4/H.264;
+- publish one independent `audio.mp3` plus `audio.idx`;
+- validate and atomically expose one immutable READY content item backed by simple object storage and SQLite records.
 
-User-video upload, STL upload, STL validation, bundle requirements for a model file, and local 3D rendering are removed from the product path. Authentication remains optional and disabled for the competition demo.
+User-video upload, STL upload, STL validation, model files, ZIP bundle requirements, local 3D rendering, and a Preset Video pool are removed from the product path.

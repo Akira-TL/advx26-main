@@ -2,16 +2,16 @@
 
 Type: grilling
 Status: resolved
-Blocked by: 06, 24
+Blocked by: 06, 24, 55
 
 ## Question
 
-When a submitted Shared Sound exceeds 30 seconds, should the backend reject it, automatically keep the first 30 seconds, or require the user to choose a segment? Also confirm that shorter Preset Videos may be looped and longer ones trimmed to the final sound duration.
+When a submitted Shared Sound exceeds 30 seconds, what portion is retained, and how is the generated visual aligned to the final sound duration?
 
 ## Answer
 
-The Cloud Media Service automatically keeps the first 30 seconds when a Shared Sound is longer than the MVP limit. It does not require an interactive trimming step.
+The Cloud Media Service automatically retains the first 30 seconds when a Shared Sound exceeds the competition limit. It does not require an interactive trimming step. Shorter sounds retain their complete decoded duration without padding.
 
-For shorter sounds, retain the complete sound. The selected Preset Video is looped when shorter than the normalized sound and trimmed when longer. The generated H.264 video track and independent MP3 asset must have the same final duration within the agreed synchronization tolerance.
+The normalized MP3 duration becomes the authoritative Media Package duration. `Sound-Visualization-Kaleidoscope-effect` renders against that media timeline and targets the same duration directly. FFmpeg may trim small capture or encoder boundary excess so the constrained H.264 video and independent MP3 remain within the agreed synchronization tolerance, but the normal path does not loop a pre-existing video.
 
-The Compact Content URL response reports the normalized duration. The original uploaded duration may be retained as backend diagnostics but is not required by either board.
+The Compact Content response reports the normalized duration. The backend retains the original source audio permanently and may record its original probed duration for diagnostics and ownership history, but the boards only consume the normalized duration.

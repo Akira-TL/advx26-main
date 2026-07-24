@@ -61,7 +61,7 @@ Command `type` values are:
 
 `GET_STATUS`, `PLAY`, `PAUSE`, and `STOP` use an empty payload. `SEEK_MS` requires one integer `position_ms` bounded to the active session duration.
 
-`LOAD_SESSION` requires `content_id`, `revision`, `duration_ms`, `profile`, and normalized video/audio descriptors. The profile must be `t5ai-h264-mp3-v1`.
+`LOAD_SESSION` requires immutable `content_id`, `duration_ms`, `profile`, and normalized video/audio descriptors. The profile must be `t5ai-h264-mp3-v1`. The competition contract does not carry a separate revision field because every regenerated package receives a new content identity.
 
 The video descriptor contains:
 

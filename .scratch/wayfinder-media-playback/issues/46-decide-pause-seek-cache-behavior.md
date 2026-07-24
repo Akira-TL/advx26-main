@@ -31,6 +31,6 @@ A seek inside the buffered window may reuse already parsed MP4 metadata and buff
 
 Seeking while playing enters a temporary buffering state and resumes automatically after the target prebuffer is ready. Seeking while paused fills the target prebuffer but remains paused.
 
-Replay reuses valid beginning-of-session data still resident in memory. Missing data is fetched again through immutable Range requests. Replay does not require a new content revision or a new session identity unless Trigger explicitly issues a new `LOAD_SESSION`.
+Replay reuses valid beginning-of-session data still resident in memory. Missing data is fetched again through immutable Range requests. Replay does not require a new content identity or a new session identity unless Trigger explicitly issues a new `LOAD_SESSION`.
 
 `STOP` releases MP4 metadata, compressed and decoded buffers, and decoder state; it returns Playback to the idle screen while Trigger retains the content panel.

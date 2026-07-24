@@ -2,16 +2,16 @@
 
 Type: grilling
 Status: resolved
-Blocked by: 24, 25
+Blocked by: 24, 25, 53
 
 ## Question
 
-For the competition MVP, how does a user submit or record a Shared Sound, and which device writes the resulting Compact Content URL to NFC: a web/mobile interface, a desktop operator tool, a dedicated board, or pre-written demo tags?
+How does a user submit a Shared Sound, retain ownership, and publish the resulting content to NFC?
 
 ## Answer
 
-Use a phone-facing sharing interface. The user records a sound or selects an existing audio file, submits it to the Cloud Media Service, waits for the Media Package to become ready, and then writes the returned Compact Content URL to an NFC tag with the same phone.
+Use a phone-facing Sharing Interface. The client first obtains and persists a backend-issued opaque User Token. The user then records a sound or selects an existing audio file and uploads it with that token. The Cloud Media Service identifies the user, permanently stores the original audio under that owner, creates an asynchronous media-processing job, and returns the new `content_id` and status endpoint.
 
-The normal product flow does not require the Trigger Board to record, upload, or write NFC. For competition reliability, the team may also prepare known-good NFC tags in advance, but that is a fallback demonstration procedure rather than the canonical product contract.
+The client polls the owned content status until it becomes `READY`. It then obtains the immutable Compact Content URL and writes that URL to one or more NFC tags with the same phone. Writing a tag does not transfer ownership, create a new cloud record, or require the backend to know the physical tag UID.
 
-The exact mobile implementation technology remains an implementation decision. It must support audio capture/upload, readiness feedback, and NFC URL writing on the selected demo phone.
+The Trigger Board does not record, upload, own, or write NFC content. For competition reliability, known-good NFC tags may be prepared in advance, but that is a fallback demonstration procedure rather than the canonical product flow.

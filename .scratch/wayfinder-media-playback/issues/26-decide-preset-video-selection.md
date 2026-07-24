@@ -1,17 +1,17 @@
-# Decide the Preset Video selection policy
+# Replace Preset Video selection with deterministic cloud rendering
 
 Type: grilling
 Status: resolved
-Blocked by: 24
+Blocked by: 24, 55
 
 ## Question
 
-When the MVP has several pre-provisioned cloud video files, does every Shared Sound use the same default, does the backend select one deterministically or randomly, or does the user choose one while sharing the sound?
+How is the visual selected or generated for a Shared Sound?
 
 ## Answer
 
-The user does not choose a video. The Cloud Media Service deterministically assigns one Preset Video from the configured pool using the immutable sound/content identifier.
+The competition build does not select from a Preset Video pool. Every READY content item receives a newly rendered visual produced by `Sound-Visualization-Kaleidoscope-effect` from its normalized audio.
 
-The same published Shared Sound revision therefore always resolves to the same Preset Video. Adding or reordering videos must not silently change already-published Media Packages; the selected preset identifier is stored in the package record at publication time.
+The user does not choose a video or visual style. The backend derives a deterministic render seed from the immutable `content_id`, stores that seed with the content record, and supplies it to the headless renderer. Retries for the same unpublished content therefore reproduce the same visual behavior instead of generating a different result.
 
-A simple stable hash modulo the currently enabled preset pool is sufficient when creating a new package. The first implementation may contain only a few manually provisioned videos.
+The renderer targets the normalized sound duration directly. Adding multiple visualization themes, user-controlled style selection, and fallback preset-video selection are outside the first competition implementation.

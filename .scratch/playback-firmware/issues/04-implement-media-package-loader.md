@@ -10,7 +10,7 @@ Validate one normalized `t5ai-h264-mp3-v1` playback descriptor and load the fixe
 
 ## Functional scope
 
-- validate profile name, duration, revision, dimensions, frame rate, keyframe interval, channel count, sample rate, bitrate, URLs, file lengths, SHA-256 values, and ETags;
+- validate profile name, immutable content identity, duration, dimensions, frame rate, keyframe interval, channel count, sample rate, bitrate, URLs, file lengths, SHA-256 values, and ETags;
 - require `video.mp4` to declare `MP4_H264`, Baseline Profile, YUV420P, 480x320, supported frame rate, and bounded IDR interval;
 - reject any descriptor that declares a video index or an MP4 audio track requirement;
 - load and parse the 16-byte `audio.idx` header;
