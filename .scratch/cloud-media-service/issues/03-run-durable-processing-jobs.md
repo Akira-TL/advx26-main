@@ -4,7 +4,7 @@
 
 **Blocked by:** 02 — Issue User Tokens and upload owned source audio.
 
-**Status:** ready-for-agent
+**Status:** claimed
 
 - [ ] One in-process worker claims at most one eligible job at a time and prevents duplicate concurrent claims.
 - [ ] The owner-visible content status advances through stable stages including probing, audio normalization, visualization rendering, video encoding, index generation, validation, READY, and FAILED.
