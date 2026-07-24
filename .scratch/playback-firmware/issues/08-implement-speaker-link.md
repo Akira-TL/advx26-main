@@ -1,7 +1,7 @@
 # Implement A2DP Speaker Link functionality
 
 Type: task
-Status: claimed
+Status: resolved
 Blocked by: 01, 07
 
 ## Goal
@@ -33,6 +33,14 @@ Expose initialize, connect/reconnect, start/stop PCM, and snapshot operations. H
 
 Actual advertised name, Bluetooth address, pairing mode, and physical validation remain in the later debugging-stage speaker ticket.
 
+## Result
+
+Implemented a fixed-target A2DP Source adapter with worker-thread state reconciliation, normalized disconnected/connecting/connected/streaming snapshots, bounded reconnect backoff, explicit start/suspend control, negotiated SBC validation and encoding, mono/stereo conversion, exact PCM-frame consumption accounting, and zero clock advancement while unavailable or stopped.
+
+Enabled T5AI dual Classic-BT/BLE host configuration without modifying the shared SDK. A project-owned build launcher uses the platform's native `PROJECT_DIR` override, applies a reproducible 8 MiB partition table, and keeps native Armino and Tuya package layouts consistent. The final firmware uses a 1,224 KiB physical CP partition and a 3,672 KiB physical AP partition.
+
+Validation completed with strict host compilation, fixed-target and reconnect mocks, PCM/SBC callback tests, in-place channel conversion, AddressSanitizer/UndefinedBehaviorSanitizer, GCC static analysis, ARM symbol resolution, and a full dual-host `TUYA_T5AI_BOARD` package build.
+
 ## Out of scope
 
-Physical pairing, radio coexistence testing, tests, build, flash, and audible-output validation.
+Physical pairing, radio coexistence testing, flash, and audible-output validation.

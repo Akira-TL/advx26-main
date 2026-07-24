@@ -1,7 +1,7 @@
 # Implement PCM media clock and MP4/H.264 scheduler
 
 Type: task
-Status: open
+Status: claimed
 Blocked by: 06, 07, 08, 13
 
 ## Goal
