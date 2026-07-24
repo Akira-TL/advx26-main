@@ -4,7 +4,7 @@
 
 **Blocked by:** 10 — Serve authenticated Trigger and Playback contracts; 11 — Manage owned content, retry failures, and clean staging data.
 
-**Status:** ready-for-agent
+**Status:** claimed
 
 - [ ] Required metadata JSON, creator metadata in upload, user video, STL/model upload and validation, legacy package listing, model-file routes, ZIP bundle routes, and old soft-delete semantics are removed from the active API.
 - [ ] Legacy schemas, configuration limits, validation helpers, storage assumptions, tests, Swagger artifacts, and documentation that have no remaining caller are deleted.

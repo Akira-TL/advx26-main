@@ -48,8 +48,8 @@
 - Ticket 08 is resolved by backend commit `fb6b4e7`.
 - Ticket 09 is resolved by backend commit `5157397`.
 - Ticket 10 is resolved by backend commit `4ce4df1`.
-- Ticket 11 is claimed and is the current implementation frontier.
-- Ticket 12 is the final contract and documentation cleanup after both device delivery and owner lifecycle are complete.
+- Ticket 11 is resolved by backend commit `d3fffb0`.
+- Ticket 12 is claimed and is the final implementation frontier.
 
 ## Repository boundaries
 
