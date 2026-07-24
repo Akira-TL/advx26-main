@@ -4,7 +4,7 @@
 
 **Blocked by:** 04 — Probe, repair, and normalize source audio.
 
-**Status:** ready-for-agent
+**Status:** claimed
 
 - [ ] Feature extraction consumes deterministic normalized PCM rather than a microphone, audio element, real-time AnalyserNode, or wall-clock callback.
 - [ ] The timeline defines a stable version, sample cadence, authoritative duration, and the complete feature vocabulary required by the existing visualization renderer.
