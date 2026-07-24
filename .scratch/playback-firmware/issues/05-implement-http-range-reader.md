@@ -1,7 +1,7 @@
 # Implement immutable HTTP range reader
 
 Type: task
-Status: open
+Status: resolved
 Blocked by: 01
 
 ## Goal
@@ -34,3 +34,7 @@ Expose open/verify, read-range, cancel, and close operations over one immutable 
 ## Out of scope
 
 MP4 parsing, codec decoding, scheduling, tests, build, flash, and server-side Range implementation.
+
+## Answer
+
+Implemented immutable HEAD/Range probing, strong ETag and length verification, `If-Range`, exact `206 Content-Range` validation, bounded caller-owned reads, cancellation, and stable transport error mapping in playback commit `721a793`.

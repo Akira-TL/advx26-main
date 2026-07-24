@@ -1,7 +1,7 @@
 # Implement constrained MP4 demux and sample source
 
 Type: task
-Status: open
+Status: resolved
 Blocked by: 04, 05
 
 ## Goal
@@ -42,3 +42,7 @@ Expose open, get codec configuration, locate sample, locate preceding sync sampl
 ## Out of scope
 
 H.264 decoding, color conversion, LCD presentation, MP3/A2DP, tests, build, flash, and hardware acceptance.
+
+## Answer
+
+Implemented constrained fast-start MP4 parsing, bounded video sample-table expansion, codec configuration extraction, sync/time lookup, Range-backed sample reads, container consistency checks, and length-prefixed NAL to Annex-B reconstruction in playback commit `67ff72a`.

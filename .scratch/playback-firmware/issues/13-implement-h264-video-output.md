@@ -1,7 +1,7 @@
 # Implement H.264 decoder and video output
 
 Type: task
-Status: open
+Status: resolved
 Blocked by: 06
 
 ## Goal
@@ -38,3 +38,7 @@ Expose configure, decode, poll frame, reset-at-sync, present, and close operatio
 ## Out of scope
 
 MP4 box parsing, HTTP transport, MP3/A2DP, tests, build, flash, final performance tuning, and hardware acceptance.
+
+## Answer
+
+Integrated a pinned Baseline H.264 software decoder with PSRAM allocation, IDR reset and frame-lifetime adapters; added YUV420P-to-RGB565 conversion with stale-frame suppression and double buffering; and connected a lock-hidden LVGL sink that retains the final successful frame. The implementation spans playback commits `449bd63`, `95a2515`, `edfdae7`, `9b38954`, `388a3d4`, and `43c98f7`.

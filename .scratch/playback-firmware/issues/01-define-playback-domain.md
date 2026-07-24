@@ -1,7 +1,7 @@
 # Define Playback domain and state model
 
 Type: task
-Status: open
+Status: resolved
 Blocked by:
 
 ## Goal
@@ -32,3 +32,7 @@ Expose domain values and pure transition helpers only. Do not expose HTTP handle
 ## Out of scope
 
 Board Link serialization, media loading, audio/video execution, tests, build, flash, and hardware debugging.
+
+## Answer
+
+Implemented the canonical Playback domain in `firmware/playback` with enum-driven commands, reports, states, errors, session descriptors, authoritative snapshots, and centralized transition validation. The implementation is recorded in playback commit `ea108e1` and synchronized through the later playback foundation commits.

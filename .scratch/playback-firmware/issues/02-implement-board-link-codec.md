@@ -1,7 +1,7 @@
 # Implement Board Link body and fragment codec
 
 Type: task
-Status: open
+Status: claimed
 Blocked by: 01
 
 ## Goal

@@ -1,7 +1,7 @@
 # Implement Media Package descriptor and audio index loader
 
 Type: task
-Status: open
+Status: resolved
 Blocked by: 01
 
 ## Goal
@@ -34,3 +34,7 @@ Provide a small immutable session-descriptor interface consumed by MP4 demux, au
 ## Out of scope
 
 HTTP transport implementation, MP4 box parsing, H.264/MP3 decoding, tests, build, flash, and backend asset generation.
+
+## Answer
+
+Implemented strict `t5ai-h264-mp3-v1` session validation, immutable asset checks, H.264/MP3 profile bounds, fixed-width audio-index parsing, ownership, and PCM-position lookup in playback commit `60d8625`.
