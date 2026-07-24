@@ -23,7 +23,7 @@ The upload request creates an owned content record and a durable SQLite Processi
 - `VALIDATING`;
 - `READY` or `FAILED`.
 
-Only one media job runs at a time initially so concurrent Chromium and FFmpeg processes cannot exhaust the demo server. Jobs abandoned by a process restart become claimable again. Invalid source media fails without retry; transient renderer, encoder, or storage failures receive a small bounded retry budget.
+Only one media job runs at a time initially so concurrent Chromium and FFmpeg processes cannot exhaust the demo server. The headless-render prototype measured approximately 1.23 GiB peak RSS for the Chromium process tree under SwiftShader, so serial rendering is an explicit competition constraint rather than only a conservative default. Jobs abandoned by a process restart become claimable again. Invalid source media fails without retry; transient renderer, encoder, or storage failures receive a small bounded retry budget.
 
 Storage is exposed to application code through a small Object Store interface rather than arbitrary path manipulation. The first implementation maps object keys onto a server-local directory. It permanently retains each original uploaded audio object and the immutable READY outputs:
 
@@ -32,4 +32,4 @@ Storage is exposed to application code through a small Object Store interface ra
 - `audio.idx`;
 - `manifest.json`.
 
-Temporary work objects live under a private staging keyspace. Successful jobs remove their temporary intermediates; failed jobs may retain bounded diagnostic artifacts until a cleanup operation removes them. A future S3-compatible adapter may replace the filesystem implementation without changing the media-domain or API contracts, but that adapter is not required for the competition build.
+Temporary work objects live under a private staging keyspace. They may include normalized PCM, the deterministic Audio Feature Timeline, frame-pipe scratch data, FFmpeg logs, and unpublished encoded outputs. Successful jobs remove their temporary intermediates; failed jobs may retain bounded diagnostic artifacts until a cleanup operation removes them. A future S3-compatible adapter may replace the filesystem implementation without changing the media-domain or API contracts, but that adapter is not required for the competition build.

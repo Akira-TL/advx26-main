@@ -73,21 +73,22 @@ Produce an implementation-ready technical specification, ADR set, and dependency
 - [Freeze the Board Link JSON body schema](issues/52-decide-board-link-json-schema.md) — Strict versioned messages carry immutable `content_id` without a separate revision field.
 - [Define User Token issuance and content ownership](issues/53-define-user-token-and-content-ownership.md) — Backend-issued opaque User Tokens identify owners for upload, listing, status, and management while shared NFC playback preserves ownership.
 - [Define fixed Trigger and Playback token roles](issues/54-define-fixed-device-token-roles.md) — Two Git-ignored fixed Bearer Tokens identify the only Trigger and Playback and authorize only their required routes.
-- [Render the selected visualization in the cloud](issues/55-render-cloud-visualization.md) — Adapt the existing WebGL2 renderer for file audio, deterministic seed, headless 480x320 rendering, and FFmpeg H.264 output.
-- [Use SQLite media jobs and local Object Storage](issues/56-use-sqlite-media-jobs-and-local-object-storage.md) — One serial in-process worker persists stages in SQLite and stores permanent source and READY objects behind a filesystem Object Store interface.
+- [Render the selected visualization in the cloud](issues/55-render-cloud-visualization.md) — Feed a deterministic Audio Feature Timeline into explicit 480x320/10 fps WebGL2 frame stepping and pipe ordered frames to FFmpeg; do not use MediaRecorder.
+- [Use SQLite media jobs and local Object Storage](issues/56-use-sqlite-media-jobs-and-local-object-storage.md) — One serial worker persists stages in SQLite, bounds the measured high-memory Chromium renderer, and stores permanent source and READY objects behind a filesystem Object Store interface.
+
+- [Prototype headless cloud visualization rendering](issues/57-prototype-headless-cloud-rendering.md) — Headless WebGL2 is viable, but real-time MediaRecorder capture is non-deterministic and drifts in duration; production uses explicit frame stepping and an FFmpeg frame pipe.
 
 ## Active decision frontier
 
-- [Prototype headless cloud visualization rendering](issues/57-prototype-headless-cloud-rendering.md) — Prove that the current WebGL2 project can consume a supplied audio file and reliably produce deterministic 480x320/10 fps video under Headless Chromium on the backend host.
+- The Cloud Media Service decision map is clear and is ready to collapse through `/to-spec` and `/to-tickets` before backend implementation.
 - Playback software decisions have been handed to the [Playback firmware implementation specification](../playback-firmware/spec.md); its domain, loader, and Range-reader tickets now use immutable `content_id` without a separate revision field.
 - Playback functional implementation may proceed without a physical speaker; pairing and final speaker acceptance remain deferred to the hardware-debugging stage.
 - After functional firmware tickets are implemented, [provide the fixed prototype speaker](issues/44-provide-prototype-speaker.md), execute [the simultaneous BLE and A2DP prototype](issues/19-prototype-dual-bluetooth-coexistence.md), then execute [the MP4/H.264 and MP3 playback prototype](issues/20-prototype-h264-mp3-playback.md).
-- When issue 57 resolves, collapse the backend decisions through `/to-spec`, split them through `/to-tickets`, and begin backend implementation blockers-first.
 - After cloud rendering and both hardware prototypes resolve, define [end-to-end demo acceptance](issues/18-define-demo-acceptance.md).
 
 ## Not yet specified
 
-- The exact headless capture seam, Chromium flags, deterministic frame-stepping strategy, render-time resource usage, and fallback if MediaRecorder timing is unsuitable; issue 57 must answer these.
+- The exact internal Audio Feature Timeline schema, WebGL frame-export representation, FFmpeg frame-pipe process interface, and production resource limits; these are implementation decisions to freeze in the backend specification using issue 57 findings.
 - Exact backend route names, Pydantic shapes, SQLite migrations, Object Store interface methods, worker recovery queries, and dependency-ordered implementation tickets; these belong to the backend specification after issue 57.
 - H.264 decoder implementation, reference-frame memory, bitrate ceiling, exact Playback ring-buffer sizes, and calibrated speaker latency after the media prototype.
 - The exact fixed speaker name/address until a physical A2DP Sink is supplied and approved.
