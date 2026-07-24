@@ -1,7 +1,7 @@
 # Integrate Playback engine commands, state, and reports
 
 Type: task
-Status: open
+Status: resolved
 Blocked by: 01, 03, 04, 09
 
 ## Goal
@@ -31,6 +31,14 @@ Callers know only engine initialization, command submission, and snapshot retrie
 - no media module serializes Board Link JSON;
 - every accepted command produces exactly one correlated final ACK/NACK result;
 - STOP reliably releases active media and returns the engine to IDLE.
+
+## Implementation result
+
+- Added a dedicated engine worker so Board Link callbacks only copy and enqueue commands.
+- Enforced monotonic sequence IDs, semantic command fingerprints, an eight-result cache, duplicate replay, and conflict NACKs.
+- `LOAD_SESSION` now ACKs immediately, publishes `LOADING`, downloads and validates the MP3 index, then prepares the scheduler.
+- Implemented `PLAY`, `PAUSE`, `SEEK_MS`, `STOP`, `GET_STATUS`, 500 ms progress, completion, and fatal-error reports.
+- Authoritative snapshots remain available independently of BLE connectivity, and STOP clears failed or active sessions back to IDLE.
 
 ## Out of scope
 

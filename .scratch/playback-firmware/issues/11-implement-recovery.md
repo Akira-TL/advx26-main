@@ -1,7 +1,7 @@
 # Implement Playback recovery and resynchronization
 
 Type: task
-Status: open
+Status: resolved
 Blocked by: 10
 
 ## Goal
@@ -35,6 +35,15 @@ Recovery remains coordinated by `playback_engine` using normalized media-pipelin
 - an invalid H.264 reference chain is never presented after a decoder error;
 - stale work from a replaced session cannot display frames, consume PCM, or emit reports;
 - fatal errors retain enough snapshot information for Trigger to show the agreed error state.
+
+## Implementation result
+
+- Board Link reconnects retain the engine snapshot and boot ID without stopping active media execution.
+- HTTP identity mismatches, range failures, MP4 validation failures, and codec failures map to distinct typed Playback errors.
+- An isolated H.264 failure clears invalid queued output, resets at the next IDR within the keyframe bound, reapplies parameter sets, and decodes forward; a second failed GOP recovery is fatal.
+- MP3 recovery inserts timeline-preserving silence and stops after the bounded consecutive-failure/deadline policy.
+- Speaker loss enters `WAITING_SPEAKER`, freezes PCM position, and preserves prior play/pause intent across reconnection.
+- Session replacement closes old readers, decoders, Speaker Link state, and buffers; decoder generations and frame leases reject stale output.
 
 ## Out of scope
 

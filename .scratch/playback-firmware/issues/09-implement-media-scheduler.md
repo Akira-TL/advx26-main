@@ -1,7 +1,7 @@
 # Implement PCM media clock and MP4/H.264 scheduler
 
 Type: task
-Status: claimed
+Status: resolved
 Blocked by: 06, 07, 08, 13
 
 ## Goal
@@ -33,6 +33,14 @@ Expose prepare, play, pause, seek, stop, and snapshot operations. The scheduler 
 - video presentation cannot block or rewind the audio clock;
 - arbitrary H.264 dependency samples are not skipped merely because their presentation timestamp is late;
 - pause, seek, replay, speaker loss, IDR recovery, and final-frame hold share one media-position model.
+
+## Implementation result
+
+- Added a caller-driven scheduler with bounded PCM prefetch and a three-frame YUV queue.
+- Media position is derived only from MP3 frames consumed by Speaker Link.
+- Implemented buffering, waiting-for-speaker, pause, seek, replay and final-frame hold behavior.
+- Late presentation frames are dropped only after dependency-order H.264 decoding.
+- Added fine-grained MP3 ring synchronization for concurrent A2DP consumption and prefetch.
 
 ## Out of scope
 
