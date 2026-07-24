@@ -3,6 +3,7 @@
 ## Decisions so far
 
 - [Define Playback domain and state model](issues/01-define-playback-domain.md) — Canonical commands, reports, states, errors, sessions, snapshots, and transition helpers are implemented.
+- [Implement Board Link body and fragment codec](issues/02-implement-board-link-codec.md) — Fixed binary framing, bounded reassembly, strict JSON commands, report serialization, and stable NACK mapping are implemented.
 - [Implement Media Package descriptor and audio index loader](issues/04-implement-media-package-loader.md) — The constrained H.264/MP3 profile, immutable assets, and fixed-width MP3 index are validated before decode.
 - [Implement immutable HTTP range reader](issues/05-implement-http-range-reader.md) — HEAD/Range identity checks, bounded reads, cancellation, and stable transport errors are implemented.
 - [Implement constrained MP4 demux and sample source](issues/06-implement-mp4-demux.md) — Fast-start MP4 sample tables, sync lookup, Range-backed access units, and Annex-B conversion are implemented.
@@ -10,6 +11,6 @@
 
 ## Active implementation frontier
 
-- [Implement Board Link body and fragment codec](issues/02-implement-board-link-codec.md) is claimed.
+- [Implement Board Link GATT peripheral](issues/03-implement-board-link-gatt.md) is claimed.
 - [Implement indexed MP3 audio path](issues/07-implement-mp3-audio-path.md) is open and independently unblocked.
-- GATT, Speaker Link, scheduler, engine, recovery, and application bootstrap remain blocked by their listed dependencies.
+- Speaker Link, scheduler, engine, recovery, and application bootstrap remain blocked by their listed dependencies.

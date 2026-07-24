@@ -1,7 +1,7 @@
 # Implement Board Link body and fragment codec
 
 Type: task
-Status: claimed
+Status: resolved
 Blocked by: 01
 
 ## Goal
@@ -32,3 +32,7 @@ The codec accepts byte buffers and returns domain commands or serialized report 
 ## Out of scope
 
 BLE advertising, characteristic registration, command execution, tests, build, flash, and hardware debugging.
+
+## Answer
+
+Implemented the fixed 16-byte little-endian fragment envelope, bounded fragmentation and direction-scoped reassembly, duplicate/conflict handling, five-second expiry, strict UTF-8/versioned JSON command parsing, normalized Media Package validation, report serialization, and stable NACK mapping. The implementation is recorded in playback commits `b24aa80` and `48049a2`.

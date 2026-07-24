@@ -1,7 +1,7 @@
 # Implement Board Link GATT peripheral
 
 Type: task
-Status: open
+Status: claimed
 Blocked by: 02
 
 ## Goal
