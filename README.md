@@ -3,7 +3,7 @@
 > 把声音铸造成可触摸的记忆。
 
 <p align="center">
-  <img src="clients/web/public/hero-soundpola.png" alt="SoundPola 声音记忆装置" width="360" />
+  <img src="https://github.com/Akira-TL/advx26-web/blob/master/public/hero-soundpola.png" alt="SoundPola 声音记忆装置" width="360" />
 </p>
 
 照片会进入相册，文字会留在日记里，但声音常常只存在于发生的那一刻。
@@ -66,13 +66,13 @@ SoundPola 希望让声音获得三种过去很少同时拥有的东西：
 
 SoundPola 不是一块孤立的硬件，而是由多个边界清晰的部分共同完成体验：
 
-| 部分 | 负责什么 |
-| --- | --- |
-| Android App | 录音、命名、管理 Draft、发起 Press、浏览 Collection |
-| 云端媒体服务 | 音频修复与归一化、特征提取、视觉渲染、H.264/MP3 发布与内容分发 |
-| Trigger 设备 | 读取或写入 NFC 声片、处理用户操作、向播放端发送控制信息 |
-| Playback 设备 | 下载并同步播放音频与动态视觉，向 Trigger 回报播放状态 |
-| Web 页面 | 展示项目理念，并为一段声音提供无需安装 App 的预览与分享入口 |
+| 部分          | 负责什么                                                       |
+| ------------- | -------------------------------------------------------------- |
+| Android App   | 录音、命名、管理 Draft、发起 Press、浏览 Collection            |
+| 云端媒体服务  | 音频修复与归一化、特征提取、视觉渲染、H.264/MP3 发布与内容分发 |
+| Trigger 设备  | 读取或写入 NFC 声片、处理用户操作、向播放端发送控制信息        |
+| Playback 设备 | 下载并同步播放音频与动态视觉，向 Trigger 回报播放状态          |
+| Web 页面      | 展示项目理念，并为一段声音提供无需安装 App 的预览与分享入口    |
 
 两块设备在局域网中使用轻量 JSON 消息协作。Trigger 负责交互和控制，Playback 专注于稳定播放；云端负责把普通手机录音转换成嵌入式设备可以直接消费的媒体包。
 
