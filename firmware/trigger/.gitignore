@@ -1,0 +1,32 @@
+# TuyaOpen IDE — machine-local devplat bridge (auto-generated)
+.tuyaopen/
+.vscode/
+.agents/
+.qoder/
+.claude/
+
+# Build artifacts
+source/embedded/.build/
+source/embedded/.cache/
+source/embedded/dist/
+source/embedded/.target_logging/
+build/
+
+# Logs and temp files
+*.log
+*.pid
+source/embedded/codex-*
+
+# Project meta not part of the example
+tuyaopen.project.ini
+CLAUDE.md
+AGENTS.md
+agents.md
+PN532_DEBUG_REPORT.md
+
+# Miniapp placeholder
+source/miniapp/
+# TuyaOpen IDE — machine-local devplat bridge (auto-generated)
+.tuyaopen/ide/
+
+firmware_backup/

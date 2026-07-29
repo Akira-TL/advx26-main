@@ -1,7 +1,3 @@
-[submodule "backend"]
-	path = backend
-	url = git@github.com:Akira-TL/advx26-backend.git
-
 [submodule "clients/soundpola-app"]
 	path = clients/soundpola-app
 	url = git@github.com:hankunlingccx-cell/advx-soundpola-app.git

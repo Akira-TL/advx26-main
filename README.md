@@ -18,10 +18,11 @@ The initial target is the official **3.5-inch 320x480 ILI9488** display configur
 ```text
 firmware/
   playback/               # Playback Board firmware Git submodule
-  trigger/                # reserved Trigger Board repository location
-backend/                  # FastAPI service Git submodule
+  trigger/                # Trigger Board firmware (PN532/TuyaOpen, in-tree)
+backend/                  # FastAPI service (in-tree)
 clients/
   soundpola-app/          # mobile sharing client Git submodule
+  web/                    # web frontend (Vite + React, in-tree)
 patches/                  # shared TuyaOpen patches
 scripts/                  # parent build/setup helpers
 tests/                    # parent integration and host checks
@@ -30,13 +31,13 @@ docs/                     # durable engineering documentation
 
 Local discussion artifacts under `.scratch/` and the throwaway `Sound-Visualization-Kaleidoscope-effect/` prototype are intentionally excluded from the parent Git repository. Their local files remain available; the visualization prototype retains its own independent Git repository.
 
-After cloning the parent repository, initialize the maintained Playback, backend, and mobile-client repositories with:
+After cloning the parent repository, initialize the maintained Playback and mobile-client repositories with:
 
 ```bash
 git submodule update --init --recursive
 ```
 
-`firmware/playback/src/main.c` owns Playback TuyaOpen/LVGL startup. `firmware/playback/src/mob_screen.c` owns its current visual composition. Trigger implementation is intentionally absent from `firmware/trigger/` until a dedicated Trigger repository is created.
+`firmware/playback/src/main.c` owns Playback TuyaOpen/LVGL startup. `firmware/playback/src/mob_screen.c` owns its current visual composition. `firmware/trigger/` contains the Trigger Board firmware (PN532 NFC, pairing/playlist UI).
 
 ## Local checks
 

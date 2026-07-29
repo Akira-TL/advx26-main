@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --adm-color-background: #000000;
+  --adm-color-background-body: #000000;
+  --adm-color-box: #000000;
+  --adm-color-border: rgba(255, 255, 255, 0.12);
+  --adm-color-text: #ffffff;
+  --adm-color-weak: #9a9a9a;
+  font-family: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background-color: #000000;
+  color: #ffffff;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+  background: #000000 !important;
+  background-color: #000000 !important;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  color: #ffffff;
+  overflow-x: hidden;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: rgba(99, 224, 203, 0.28);
+  color: #ffffff;
+}
+
+.sp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0 1.25rem;
+  border-radius: 8px;
+  font-family: "Syne", "Noto Sans SC", sans-serif;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.sp-btn:focus-visible {
+  outline: 2px solid #63e0cb;
+  outline-offset: 2px;
+}
+
+.sp-btn-primary {
+  border: 1px solid #63e0cb;
+  background: #63e0cb;
+  color: #000000;
+}
+
+.sp-btn-primary:hover {
+  background: #74e7d3;
+}
+
+.sp-btn-primary:active {
+  transform: translateY(1px);
+}
+
+.sp-btn-ghost {
+  border: 1px solid rgba(99, 224, 203, 0.28);
+  background: transparent;
+  color: #ffffff;
+}
+
+.sp-btn-ghost:hover {
+  border-color: #63e0cb;
+  color: #63e0cb;
+}
+
+.sp-btn-disabled,
+.sp-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.soundpola-primary-button {
+  border: 1px solid #63e0cb !important;
+  background: #63e0cb !important;
+  color: #000000 !important;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.soundpola-secondary-button {
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: transparent !important;
+  color: #ffffff !important;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.adm-button-disabled {
+  opacity: 0.45;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
