@@ -34,3 +34,4 @@ patches/
 
 # External firmware submodule workspace
 /firmware/playback/
+app-release.apk

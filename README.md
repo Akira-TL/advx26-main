@@ -1,44 +1,126 @@
-# SoundPola AdventureX 2026
+# SoundPola
 
-SoundPola competition workspace maintained in `/home/akira/Projects/advx26`. It contains the T5AI firmware, backend service, and mobile sharing client as separate project boundaries.
+> 把声音铸造成可触摸的记忆。
 
-## Detected hardware
+<p align="center">
+  <img src="clients/web/public/hero-soundpola.png" alt="SoundPola 声音记忆装置" width="360" />
+</p>
 
-- USB bridge: `1a86:55d2 QinHeng USB Dual_Serial`
-- Playback Board `5AAE167197`: download `/dev/ttyACM0`, log `/dev/ttyACM1`
-- Trigger Board `5AAE167460`: download `/dev/ttyACM2`, log `/dev/ttyACM3`
-- Log baud rate: `460800`
-- Any additional connected board is unmanaged by this workstream until the user explicitly assigns it. Do not flash it, open its serial ports, or infer a Trigger/Playback role for it.
-- Existing firmware is already refreshing LCD and LVGL, so the physical display path is working.
+照片会进入相册，文字会留在日记里，但声音常常只存在于发生的那一刻。
 
-The initial target is the official **3.5-inch 320x480 ILI9488** display configuration. If the attached panel is the 0.9-inch ST7735 board, change the board configuration before flashing.
+一句没有再说过的话、一段旅行中的环境声、朋友突然唱起的旋律，或者某个房间曾经拥有的声音，都很容易淹没在聊天记录和文件列表中。我们想做的不是另一个录音 App，而是一种更接近照片、唱片和纪念物的声音保存方式。
 
-## Layout
+**SoundPola 是一套连接手机、实体 NFC 声片、云端媒体处理与桌面播放装置的声音记忆系统。** 用户录下一段声音后，系统会根据声音本身生成独特的视觉图样，并把这段记忆写入一张可以拿在手里的声片。以后只需要把声片靠近装置，声音与它的视觉便会再次出现。
+
+## 我们想创造什么
+
+SoundPola 希望让声音获得三种过去很少同时拥有的东西：
+
+- **形状**：每段声音根据自身特征生成对应的动态视觉，而不是只显示一条通用波形。
+- **实体入口**：一张 NFC 声片只对应一段声音。触碰声片，比在文件列表里搜索更接近“拿起一段回忆”。
+- **持续身份**：声音拥有稳定编号、记录与分享入口，使它不再只是某台手机里的临时文件。
+
+我们把尚未写入声片的声音称为 **Draft**，把将声音写入实体媒介的过程称为 **Press**，把已经完成绑定、可以被再次触发的声音称为 **Collection**。
+
+## 一次完整的 SoundPola 体验
+
+### 1. 捕捉
+
+用户在手机上录下一段值得保留的声音。时间、地点、时长与设备信息由系统自动记录，用户只需要为它命名。
+
+### 2. 生成
+
+云端修复并归一化音频，提取声音特征，生成与这段声音对应的动态视觉，并准备适合嵌入式设备播放的音视频资源。
+
+### 3. 铸造
+
+用户在 App 中选择一条 Draft，向设备发起 Press。设备检测空白 NFC 声片，写入这段声音的稳定入口并完成校验。写入后的声片不会被下一次录音覆盖。
+
+### 4. 重现
+
+把声片靠近 SoundPola，装置会读取它所指向的记忆，播放原始声音，并在屏幕上呈现由这段声音生成的视觉。它也可以通过网页分享给没有设备的人。
 
 ```text
-firmware/
-  playback/               # Playback Board firmware Git submodule
-  trigger/                # reserved Trigger Board repository location
-backend/                  # FastAPI service Git submodule
-clients/
-  soundpola-app/          # mobile sharing client Git submodule
-patches/                  # shared TuyaOpen patches
-scripts/                  # parent build/setup helpers
-tests/                    # parent integration and host checks
-docs/                     # durable engineering documentation
+现实中的声音
+    ↓
+手机录制与整理
+    ↓
+云端音频处理 + 声音视觉生成
+    ↓
+实体 NFC 声片永久绑定
+    ↓
+触碰声片
+    ↓
+播放装置重现声音与视觉
 ```
 
-Local discussion artifacts under `.scratch/` and the throwaway `Sound-Visualization-Kaleidoscope-effect/` prototype are intentionally excluded from the parent Git repository. Their local files remain available; the visualization prototype retains its own independent Git repository.
+## 为什么要做成实体声片
 
-After cloning the parent repository, initialize the maintained Playback, backend, and mobile-client repositories with:
+很多数字产品擅长保存，却不擅长让人再次遇见。
+
+当一段声音只是一个文件，它会和数千条内容一起沉入目录；当它拥有一张实体声片，人可以把它送给别人、放在桌上、夹进相册，或者在多年后偶然拿起。SoundPola 关注的不只是“数据有没有被保存”，而是**一段记忆是否拥有被重新触发的机会**。
+
+我们也刻意让“一张声片对应一段声音”。这种限制减少了效率，却赋予了实体媒介明确的归属感：它不是一个可以反复覆盖的 U 盘，而是一张已经完成曝光的声音宝丽来。
+
+## 系统如何协作
+
+SoundPola 不是一块孤立的硬件，而是由多个边界清晰的部分共同完成体验：
+
+| 部分 | 负责什么 |
+| --- | --- |
+| Android App | 录音、命名、管理 Draft、发起 Press、浏览 Collection |
+| 云端媒体服务 | 音频修复与归一化、特征提取、视觉渲染、H.264/MP3 发布与内容分发 |
+| Trigger 设备 | 读取或写入 NFC 声片、处理用户操作、向播放端发送控制信息 |
+| Playback 设备 | 下载并同步播放音频与动态视觉，向 Trigger 回报播放状态 |
+| Web 页面 | 展示项目理念，并为一段声音提供无需安装 App 的预览与分享入口 |
+
+两块设备在局域网中使用轻量 JSON 消息协作。Trigger 负责交互和控制，Playback 专注于稳定播放；云端负责把普通手机录音转换成嵌入式设备可以直接消费的媒体包。
+
+## 当前进展
+
+SoundPola 目前是为 **AdventureX 2026** 构建的可运行原型，核心链路正在逐步汇合。
+
+- Android 端已经具备 Record、Drafts、Press、Collection 与 Memory 的主要产品流程。
+- 云端已经能够接收音频并完成归一化、声音特征计算、动态视觉渲染、H.264 视频编码和不可变媒体发布。
+- Playback 固件已经跑通 T5AI 屏幕、触控、联网、MP3 音频与 H.264 视频播放链路。
+- Web 端已经包含项目介绍页和内容预览页。
+- Trigger 的 NFC 写入、实体交互和双板网络控制仍在持续集成。
+- 数字资产登记与长期存证属于产品目标，当前原型优先验证“录制—生成—写入—触碰播放”这条体验闭环。
+
+这不是一个已经定型的消费产品。协议、外壳、交互和部署方式仍可能快速变化，但项目始终围绕同一个问题推进：**怎样让一段声音从临时数据，变成愿意被长期保存的物件。**
+
+## 仓库结构
+
+```text
+backend/                    云端媒体处理与内容分发服务
+clients/
+  soundpola-app/            Android 客户端
+  web/                      项目介绍、下载与内容预览页面
+firmware/
+  trigger/                  NFC、交互与控制端固件
+  playback/                 音视频播放端固件
+Sound-Visualization-
+  Kaleidoscope-effect/      声音视觉生成原型与渲染器
+scripts/                    仓库级构建与环境脚本
+tests/                      仓库级配置和集成检查
+```
+
+各部分拥有独立的开发说明：
+
+- [云端媒体服务](backend/README.md)
+- [Android App](clients/soundpola-app/README.md)
+- [Web 页面](clients/web/README.md)
+- [固件目录](firmware/README.md)
+
+## 开始开发
+
+克隆仓库后先初始化子模块：
 
 ```bash
 git submodule update --init --recursive
 ```
 
-`firmware/playback/src/main.c` owns Playback TuyaOpen/LVGL startup. `firmware/playback/src/mob_screen.c` owns its current visual composition. Trigger implementation is intentionally absent from `firmware/trigger/` until a dedicated Trigger repository is created.
-
-## Local checks
+随后进入需要开发的子项目，并按照对应 README 准备环境。根仓库保留了几项轻量检查：
 
 ```bash
 bash tests/check_syntax.sh
@@ -46,63 +128,16 @@ bash tests/check_config.sh
 bash tests/check_sdk_patch.sh
 ```
 
-`check_syntax.sh` checks C syntax and interface usage against lightweight stubs. `check_config.sh` prevents the board selection from silently falling back to `SPARKLEIOT_T5AI_DEV`; the required resolved board is `TUYA_T5AI_BOARD` with the 3.5-inch ILI9488/GT1151 module.
+T5AI 固件依赖 TuyaOpen v1.9.0 与对应工具链；云端媒体渲染依赖 Python、FFmpeg、Node.js 和 Headless Chromium。具体配置、烧录方式、设备身份与接口说明放在各子项目文档中，而不再堆叠在项目首页。
 
-A captured startup log can also be checked with:
+## 项目原则
 
-```bash
-bash tests/check_boot_log.sh /path/to/boot.log
-```
+1. **先保存感受，再补充信息。** 录音流程必须足够直接，元数据尽量自动产生。
+2. **实体声片不是可覆盖存储。** 一张声片只属于一段声音，以此建立清晰的物理归属。
+3. **视觉来自声音本身。** 动态图样应由音频特征驱动，而不是随机选择模板。
+4. **设备各司其职。** Trigger 负责交互，Playback 负责播放，云端负责重处理，避免把所有复杂度塞进一块板子。
+5. **技术服务于再次相遇。** NFC、嵌入式播放、媒体编码和数字存证都不是终点；终点是让人愿意保存，也愿意在未来重新触碰一段声音。
 
-A real firmware build still requires TuyaOpen and the T5AI toolchain.
+---
 
-## TuyaOpen build
-
-Install TuyaOpen outside this repository, apply the shared display patch, then build the Playback submodule directly:
-
-```bash
-git clone --branch v1.9.0 https://github.com/tuya/TuyaOpen.git ~/SDKs/TuyaOpen-v1.9.0
-cd /home/akira/Projects/advx26
-bash scripts/apply-tuyaopen-patches.sh ~/SDKs/TuyaOpen-v1.9.0
-
-source ~/SDKs/TuyaOpen-v1.9.0/export.sh
-cd /home/akira/Projects/advx26/firmware/playback
-tos.py check
-tos.py config choice -c TUYA_T5AI_BOARD_LCD_3.5.config
-tos.py build
-```
-
-The patch is required for this exact panel assembly. It sets the 3.5-inch ILI9488 path to `270°` and uses CPU framebuffer copies for rotated LVGL displays, avoiding the fixed dark band and flicker observed with the TuyaOpen v1.9.0 DMA2D path.
-
-## Flash and monitor
-
-Use the lower-numbered virtual serial port for downloading and the higher-numbered port for logs:
-
-```bash
-source ~/SDKs/TuyaOpen-v1.9.0/export.sh
-cd /home/akira/Projects/advx26/firmware/playback
-
-# Playback Board 5AAE167197 only.
-tos.py flash -p /dev/serial/by-id/usb-1a86_USB_Dual_Serial_5AAE167197-if00
-
-tos.py monitor
-# Select usb-1a86_USB_Dual_Serial_5AAE167197-if02 and 460800 baud.
-```
-
-Resolve the intended board by its stable USB serial identity before every flash. Do not substitute a newly enumerated `/dev/ttyACM*` path or operate on an unmanaged board. The standalone `tyutool` alternative accepts the same stable `-p /dev/serial/by-id/...` download path.
-
-## Current screen
-
-The current prototype intentionally uses only LVGL built-in primitives and the default font:
-
-- dark full-screen background;
-- `MOB` product mark;
-- status badge;
-- centered readiness card;
-- full-width `TAP TO TEST TOUCH` control;
-- visible `TOUCH OK` feedback after a successful GT1151 click event;
-- no external image/font assets yet.
-
-The Playback display and touch composition remains isolated behind `mob_screen_create()`, so later product UI work does not need to modify TuyaOpen board initialization.
-
-When the touch event reaches LVGL, the UI changes to `TOUCH OK` and the debug UART prints `MOB touch confirmed`. The physical GT1151 click path, 270° display orientation, full-frame composition, and stable output without the previous dark band/flicker have been verified on the attached hardware.
+**SoundPola / 声音记忆 / 实体声片 / 触碰重现**
